@@ -7,10 +7,19 @@ from stacks import Stack
 
 
 def build_empty_board(board):
+    """ Initialises empty board"""
     for row in range(6):
         row = ["-"] * 7
         board.append(row)
     return board
+
+
+def build_empty_cols(columns):
+    """ Initialises empty column Stacks """
+    for col in range(7):
+        col = Stack()
+        columns.append(col)
+    return columns
 
 
 def display_board(board):
@@ -26,7 +35,9 @@ def main():
     player = ""
     player_position = ""
     board = []
+    columns = []
     board = build_empty_board(board)
+    columns = build_empty_cols(columns)
 
     while player.isspace() or player == "":
         player = input("Please tell me your name...\n")
