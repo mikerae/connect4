@@ -1,10 +1,11 @@
 """
 Connect4 game for player v. computer
 """
+from stacks import Stack
 
 
 def main():
-    """ Main Game Loop """
+    """ Main Game """
     print("\n********************")
     print(" Welcome to Connect4")
     print("********************\n")
