@@ -23,7 +23,11 @@ def build_empty_cols(columns):
 
 
 def display_board(board):
-    pass
+    top_row = ("-*" * 7) + "-"
+    print(top_row)
+    for row in board:
+        print("| " * 8)
+    print(top_row)
 
 
 def main():
@@ -38,6 +42,7 @@ def main():
     columns = []
     board = build_empty_board(board)
     columns = build_empty_cols(columns)
+    print(columns[0])
 
     while player.isspace() or player == "":
         player = input("Please tell me your name...\n")
@@ -57,4 +62,8 @@ def main():
             not_valid = False
 
 
-main()
+# main()
+board = []
+board = build_empty_board(board)
+display_board(board)
+
