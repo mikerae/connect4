@@ -61,15 +61,13 @@ def main():
         if (player_position.isspace() or player_position == ""):
             continue
         elif player_position.upper() == "X":
-            print(f'\nYou go first {player}, Make your first move...\n')
+            print(f'\nYou go first {player}, Make your move...\n')
             not_valid = False
         elif player_position.upper() == "O":
             print(f"\nI'll  go first then, {player}...\n")
             not_valid = False
 
+    display_board(board)
 
-# main()
-board = []
-board = build_empty_board(board)
-display_board(board)
 
+main()
