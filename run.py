@@ -37,6 +37,11 @@ def display_board(board):
     print(dec_row)
 
 
+def make_move(board, columns):
+    """ Players take turns to make thier move"""
+    display_board(board)
+
+
 def main():
     """ Main Game """
     print("\n********************")
@@ -66,8 +71,7 @@ def main():
         elif player_position.upper() == "O":
             print(f"\nI'll  go first then, {player}...\n")
             not_valid = False
-
-    display_board(board)
+    make_move(board, columns)
 
 
 main()
