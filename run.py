@@ -24,14 +24,14 @@ def build_empty_cols(columns):
 
 def display_board(board):
     """ Displays the current state of the board """
-    dec_row = ("-*" * 7) + "-"
-    col_nums = " 1 2 3 4 5 6 7 "
+    dec_row = ("----" * 7) + "-\n"
+    col_nums = "  1   2   3   4   5   6   7"
     board_row = ""
     print(dec_row)
     print(col_nums)
     for row in board:
         for cell in row:
-            board_row += f'|{cell}'
+            board_row += f'| {cell} '
         board_row += "|\n"
     print(board_row)
     print(dec_row)
@@ -40,6 +40,12 @@ def display_board(board):
 def make_move(board, columns):
     """ Players take turns to make thier move"""
     display_board(board)
+
+
+def check_win():
+    """ Check if win conditions are met """
+    print("check_win is called")
+    return True
 
 
 def main():
@@ -71,7 +77,11 @@ def main():
         elif player_position.upper() == "O":
             print(f"\nI'll  go first then, {player}...\n")
             not_valid = False
-    make_move(board, columns)
+    win = False
+    # Main game loop
+    while not win:
+        make_move(board, columns)
+        win = check_win()
 
 
 main()
