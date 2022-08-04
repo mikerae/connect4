@@ -3,6 +3,7 @@ Connect4 game for player v. computer
 Mike Rae
 August 2022
 """
+from random import randint
 from stacks import Stack
 
 
@@ -80,8 +81,8 @@ def player_move(board, columns, player_xo):
 def computer_move(board, columns, computer_xo):
     """ Computer makes a move """
     display_board(board)
-    print("Computer makes a move")
-    input("Choose column 1 - 7: ")
+    col = randint(0, 6)
+    print(f'Computer chooses columns {col + 1}')
     return board, columns
 
 
