@@ -93,10 +93,28 @@ def computer_move(board, columns, computer_xo):
     return board, columns
 
 
-def check_win():
+def check_win(board, xo, turn):
     """ Check if win conditions are met """
     print("check_win is called")
-    return False
+    result = False
+    # Horizonatal check
+    for row in range(6):
+        for col in range(4):
+            if board[5 - row][col] == board[5 - row][col + 1] ==\
+                    board[5 - row][col + 2] == board[5 - row][col + 3] == xo:
+                result = True
+                break
+    return result, turn
+
+
+def process_win(winner, PLAYER, player_xo, name):
+    """ Displays winner message """
+    if PLAYER == winner:
+        print(f' {name}, you have won!\n\
+            You played {player_xo}')
+    else:
+        print(f'I won this time!\n\
+            Better luch next time {name}!')
 
 
 def main():
@@ -128,30 +146,31 @@ def main():
             player_xo = "X"
             computer_xo = "O"
             PLAYER = 0
-            COMPUTER = 1
             not_valid = False
         elif player_xo.upper() == "O":
             print(f"\nI'll  go first then, {name}...\n")
             player_xo = "O"
             computer_xo = "X"
             PLAYER = 1
-            COMPUTER = 0
             not_valid = False
 
     win = False
+    winner = 0
     turn = 0
     # Main game loop
     while not win:
         if turn == PLAYER:
             # Player Move
             board, columns = player_move(board, columns, player_xo)
-            win = check_win()
+            win, winner = check_win(board, player_xo, turn)
         else:
             # Computer Move
             board, columns = computer_move(board, columns, computer_xo)
-            win = check_win()
+            win, winner = check_win(board, computer_xo, turn)
         turn += 1
         turn = turn % 2
+    display_board(board)
+    process_win(winner, PLAYER, player_xo, name)
 
 
 main()
