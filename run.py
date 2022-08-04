@@ -95,13 +95,20 @@ def computer_move(board, columns, computer_xo):
 
 def check_win(board, xo, turn):
     """ Check if win conditions are met """
-    print("check_win is called")
     result = False
     # Horizonatal check
     for row in range(6):
         for col in range(4):
             if board[5 - row][col] == board[5 - row][col + 1] ==\
                     board[5 - row][col + 2] == board[5 - row][col + 3] == xo:
+                result = True
+                break
+    # Verticle check
+    for col in range(7):
+        for row in range(4):
+            if board[5 - row][col] == board[5 - (row + 1)][col] ==\
+                    board[5 - (row + 2)][col] ==\
+                    board[5 - (row + 3)][col] == xo:
                 result = True
                 break
     return result, turn
