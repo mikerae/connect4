@@ -80,9 +80,16 @@ def player_move(board, columns, player_xo):
 
 def computer_move(board, columns, computer_xo):
     """ Computer makes a move """
-    display_board(board)
     col = randint(0, 6)
-    print(f'Computer chooses columns {col + 1}')
+    print(f'The length of column {col +1} is {len(columns[col])}')  # remove check
+    if len(columns[col]) < 6:
+        print(f'I chose column {col + 1}')  # remove check
+        columns[col].push(computer_xo)
+        board[6 - len(columns[col])][col] = \
+            columns[col].peek()
+    else:
+        print(f'I chose column {col + 1}, but it was full')  # remove check
+        computer_move(board, columns, computer_xo)
     return board, columns
 
 
