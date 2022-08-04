@@ -37,17 +37,52 @@ def display_board(board):
     print(dec_row)
 
 
-def player_move(board, columns, player_XO, name):
+def check_player_input(column, columns):
+    """
+    Checks if white space or "" is input
+    Checks chosen column is string in range 1 - 7
+    Checks if chosen column is full
+    """
+    try:
+        if column == "" or column.isspace():
+            raise ValueError(
+                'Please choose a column between 1 and 7'
+            )
+        elif int(column) not in range(1, 8):
+            raise ValueError(
+                'Please choose a column between 1 and 7'
+            )
+        elif len(columns[int(column) - 1]) >= 6:
+            raise ValueError(
+                f'Column {column} is full, please choose another column'
+            )
+        else:
+            print(f'You chose column {column}...')
+            return True
+    except ValueError as e:
+        print(f'{e}')
+        return False
+
+
+def player_move(board, columns, player_xo):
     """ Player makes a move"""
     display_board(board)
-    print(f'{name} makes a move')
-    input("Choose column 1 - 7: ")
+    column = (input("Choose column 1 - 7: "))
+    if check_player_input(column, columns):
+        columns[int(column) - 1].push(player_xo)
+        board[6 - len(columns[int(column) - 1])][int(column) - 1] = \
+            columns[int(column) - 1].peek()
+    else:
+        player_move(board, columns, player_xo)
+    return board, columns
 
 
-def computer_move(board, columns, computer_XO):
+def computer_move(board, columns, computer_xo):
     """ Computer makes a move """
+    display_board(board)
     print("Computer makes a move")
     input("Choose column 1 - 7: ")
+    return board, columns
 
 
 def check_win():
@@ -63,8 +98,8 @@ def main():
     print("********************\n")
 
     name = ""
-    player_XO = ""
-    computer_XO = ""
+    player_xo = ""
+    computer_xo = ""
     board = []
     columns = []
     board = build_empty_board(board)
@@ -77,20 +112,20 @@ def main():
 
     not_valid = True
     while not_valid:
-        player_XO = input("Type X to play first, or O to play second: ")
-        if (player_XO.isspace() or player_XO == ""):
+        player_xo = input("Type X to play first, or O to play second: ")
+        if (player_xo.isspace() or player_xo == ""):
             continue
-        elif player_XO.upper() == "X":
+        elif player_xo.upper() == "X":
             print(f'\nYou go first {name}, Make your move...\n')
-            player_XO = "X"
-            computer_XO = "O"
+            player_xo = "X"
+            computer_xo = "O"
             PLAYER = 0
             COMPUTER = 1
             not_valid = False
-        elif player_XO.upper() == "O":
+        elif player_xo.upper() == "O":
             print(f"\nI'll  go first then, {name}...\n")
-            player_XO = "O"
-            computer_XO = "X"
+            player_xo = "O"
+            computer_xo = "X"
             PLAYER = 1
             COMPUTER = 0
             not_valid = False
@@ -101,11 +136,11 @@ def main():
     while not win:
         if turn == PLAYER:
             # Player Move
-            player_move(board, columns, player_XO, name)
+            board, columns = player_move(board, columns, player_xo)
             win = check_win()
-        elif turn == COMPUTER:
+        else:
             # Computer Move
-            computer_move(board, columns, computer_XO)
+            board, columns = computer_move(board, columns, computer_xo)
             win = check_win()
         turn += 1
         turn = turn % 2
