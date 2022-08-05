@@ -111,6 +111,19 @@ def check_win(board, xo, turn):
                     board[5 - (row + 3)][col] == xo:
                 result = True
                 break
+    # +ve slope Diagonal or -ve slope Diagonal check
+    for row in range(6):
+        for col in range(4):
+            if board[5 - row][col] ==\
+                    board[5 - (row + 1)][col + 1] ==\
+                    board[5 - (row + 2)][col + 2] ==\
+                    board[5 - (row + 3)][col + 3] == xo or\
+                    board[5 - row][col + 3] ==\
+                    board[5 - (row + 1)][col + 2] ==\
+                    board[5 - (row + 2)][col + 1] ==\
+                    board[5 - (row + 3)][col] == xo:
+                result = True
+                break
     return result, turn
 
 
