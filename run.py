@@ -5,6 +5,7 @@ August 2022
 """
 from random import randint
 from stacks import Stack
+from game import Game
 
 
 def build_empty_board(board):
@@ -212,6 +213,9 @@ def main():
             computer_xo = "X"
             PLAYER = 1
             not_valid = False
+
+    game = Game(board, name, player_xo)
+    print(f' Hi {game.player}, your game started at {game.start}')
 
     # Main game loop
     while not win:
