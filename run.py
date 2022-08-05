@@ -136,21 +136,43 @@ def check_win(board, xo, turn):
 def check_draw(column_full):
     """ Check for draw """
     draw = False
-    if len(column_full) == 0:
+    if len(column_full) == 0:  # remove check
         print("draw_set is empty")
     elif len(column_full) >= 7:
-        print(f'All columns are full: {column_full}. Its a draw')
+        print(f'All columns are full: {column_full}. Its a draw')  # remove check
         draw = True
     return draw
 
 
+def start_again(name):
+    """ Gives player option to return to the top of the program """
+    again_set = ("Y", "N")
+    again = input("Would you like to start again? Type 'y' or 'n'")
+    try:
+        if again == "" or again.isspace():
+            raise ValueError(
+                'Please type "y" or "n":'
+            )
+        elif again.upper() not in again_set:
+            raise ValueError(
+                'Please type "y" or "n":'
+            )
+    except ValueError as e:
+        print(f'{e}')
+        start_again(name)
+    if again.upper() == "Y":
+        main()
+    else:
+        print(f'Thanks for playing, {name},\n See you again soon!')
+
+
 def process_win(winner, PLAYER, player_xo, name, draw):
     """ Displays winner message """
-    if PLAYER == winner:
+    if draw:
+        print(f'Its a draw! Nice game {name}.')
+    elif PLAYER == winner:
         print(f' {name}, you have won!\n\
             You played {player_xo}')
-    elif draw:
-        print(f'Its a draw! Nice game {name}.')
     else:
         print(f'I won this time!\n\
             Better luch next time {name}!')
@@ -175,9 +197,10 @@ def main():
     winner = 0
     turn = 0
 
-    while name.isspace() or name == "":
+    while name == "" or name.isspace():
         name = input("Please tell me your name...\n")
-
+        if name == "" or name.isspace():
+            print("Please try again...")
     print(f'\nHello {name}')
 
     not_valid = True
@@ -199,7 +222,7 @@ def main():
             not_valid = False
 
     # Main game loop
-    while not win or not draw:
+    while not win:
         if turn == PLAYER:
             # Player Move
             board, columns, column_full =\
@@ -214,8 +237,12 @@ def main():
             draw = check_draw(column_full)
         turn += 1
         turn = turn % 2
+        print(f'Draw: {draw}, Win: {win}')
+        if draw:
+            break
     display_board(board)
     process_win(winner, PLAYER, player_xo, name, draw)
+    start_again(name)
 
 
 main()
