@@ -65,7 +65,7 @@ def check_player_input(column, columns):
         return False
 
 
-def player_move(board, columns, player_xo):
+def player_move(board, columns, player_xo, column_full):
     """ Player makes a move"""
     display_board(board)
     column = (input("Choose column 1 - 7: "))
@@ -73,12 +73,15 @@ def player_move(board, columns, player_xo):
         columns[int(column) - 1].push(player_xo)
         board[6 - len(columns[int(column) - 1])][int(column) - 1] = \
             columns[int(column) - 1].peek()
+        if len(columns[int(column) - 1]) >= 6:
+            column_full.append(True)
+            print(f'Colum {column} is now full')  # remove check
     else:
-        player_move(board, columns, player_xo)
-    return board, columns
+        player_move(board, columns, player_xo, column_full)
+    return board, columns, column_full
 
 
-def computer_move(board, columns, computer_xo):
+def computer_move(board, columns, computer_xo, column_full):
     """ Computer makes a move """
     col = randint(0, 6)
     print(f'The length of column {col +1} is {len(columns[col])}')  # remove check
@@ -87,10 +90,13 @@ def computer_move(board, columns, computer_xo):
         columns[col].push(computer_xo)
         board[6 - len(columns[col])][col] = \
             columns[col].peek()
+        if len(columns[col]) >= 6:
+            column_full.append(True)
+            print(f'Column {col + 1} is now full')  # remove check
     else:
         print(f'I chose column {col + 1}, but it was full')  # remove check
-        computer_move(board, columns, computer_xo)
-    return board, columns
+        computer_move(board, columns, computer_xo, column_full)
+    return board, columns, column_full
 
 
 def check_win(board, xo, turn):
@@ -127,11 +133,24 @@ def check_win(board, xo, turn):
     return result, turn
 
 
-def process_win(winner, PLAYER, player_xo, name):
+def check_draw(column_full):
+    """ Check for draw """
+    draw = False
+    if len(column_full) == 0:
+        print("draw_set is empty")
+    elif len(column_full) >= 7:
+        print(f'All columns are full: {column_full}. Its a draw')
+        draw = True
+    return draw
+
+
+def process_win(winner, PLAYER, player_xo, name, draw):
     """ Displays winner message """
     if PLAYER == winner:
         print(f' {name}, you have won!\n\
             You played {player_xo}')
+    elif draw:
+        print(f'Its a draw! Nice game {name}.')
     else:
         print(f'I won this time!\n\
             Better luch next time {name}!')
@@ -150,6 +169,11 @@ def main():
     columns = []
     board = build_empty_board(board)
     columns = build_empty_cols(columns)
+    win = False
+    draw = False
+    column_full = []
+    winner = 0
+    turn = 0
 
     while name.isspace() or name == "":
         name = input("Please tell me your name...\n")
@@ -174,23 +198,24 @@ def main():
             PLAYER = 1
             not_valid = False
 
-    win = False
-    winner = 0
-    turn = 0
     # Main game loop
-    while not win:
+    while not win or not draw:
         if turn == PLAYER:
             # Player Move
-            board, columns = player_move(board, columns, player_xo)
+            board, columns, column_full =\
+                player_move(board, columns, player_xo, column_full)
             win, winner = check_win(board, player_xo, turn)
+            draw = check_draw(column_full)
         else:
             # Computer Move
-            board, columns = computer_move(board, columns, computer_xo)
+            board, columns, column_full =\
+                computer_move(board, columns, computer_xo, column_full)
             win, winner = check_win(board, computer_xo, turn)
+            draw = check_draw(column_full)
         turn += 1
         turn = turn % 2
     display_board(board)
-    process_win(winner, PLAYER, player_xo, name)
+    process_win(winner, PLAYER, player_xo, name, draw)
 
 
 main()
