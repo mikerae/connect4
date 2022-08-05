@@ -75,7 +75,6 @@ def player_move(board, columns, player_xo, column_full):
             columns[int(column) - 1].peek()
         if len(columns[int(column) - 1]) >= 6:
             column_full.append(True)
-            print(f'Colum {column} is now full')  # remove check
     else:
         player_move(board, columns, player_xo, column_full)
     return board, columns, column_full
@@ -84,17 +83,13 @@ def player_move(board, columns, player_xo, column_full):
 def computer_move(board, columns, computer_xo, column_full):
     """ Computer makes a move """
     col = randint(0, 6)
-    print(f'The length of column {col +1} is {len(columns[col])}')  # remove check
     if len(columns[col]) < 6:
-        print(f'I chose column {col + 1}')  # remove check
         columns[col].push(computer_xo)
         board[6 - len(columns[col])][col] = \
             columns[col].peek()
         if len(columns[col]) >= 6:
             column_full.append(True)
-            print(f'Column {col + 1} is now full')  # remove check
     else:
-        print(f'I chose column {col + 1}, but it was full')  # remove check
         computer_move(board, columns, computer_xo, column_full)
     return board, columns, column_full
 
@@ -136,10 +131,7 @@ def check_win(board, xo, turn):
 def check_draw(column_full):
     """ Check for draw """
     draw = False
-    if len(column_full) == 0:  # remove check
-        print("draw_set is empty")
-    elif len(column_full) >= 7:
-        print(f'All columns are full: {column_full}. Its a draw')  # remove check
+    if len(column_full) >= 7:
         draw = True
     return draw
 
