@@ -242,20 +242,8 @@ def main():
             break
     display_board(board)
     process_win(winner, PLAYER, player_xo, name, draw, game)
-    game.board = board
-    game.end = datetime.now()
-    # game.duration = timedelta(datetime.time(game.end) -
-                            #   datetime.time(game.start))
-    print(f'Well done {game.player}')
-    print(f'You payed {game.xo}')
-    print(f'Your game ID is: {game.id}')
-    print(f'The winner was : {game.winner}')
-    print(f'The winner made {game.moves} moves.')
-    print("The final board was ...")
-    display_board(game.board)
-    print(f'The game started at {game.start}')
-    print(f'The game ended at {game.end}')
-    # print(f'The game lasted {game.duration}')
+    game.final_update(board)
+    game.display_game_data()
     start_again(name)
 
 
