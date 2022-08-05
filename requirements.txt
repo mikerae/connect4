@@ -1,1 +1,2 @@
-# Your requirements go here
+python-slugify==6.1.2
+text-unidecode==1.3

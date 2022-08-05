@@ -4,6 +4,7 @@ Mike Rae
 August 2022
 """
 from random import randint
+from datetime import datetime, timedelta
 from stacks import Stack
 from game import Game
 
@@ -159,16 +160,19 @@ def start_again(name):
         print(f'Thanks for playing, {name},\n See you again soon!')
 
 
-def process_win(winner, PLAYER, player_xo, name, draw):
+def process_win(winner, PLAYER, player_xo, name, draw, game):
     """ Displays winner message """
     if draw:
         print(f'Its a draw! Nice game {name}.')
+        game.winner = "draw"
     elif PLAYER == winner:
         print(f' {name}, you have won!\n\
             You played {player_xo}')
+        game.winner = name
     else:
         print(f'I won this time!\n\
             Better luch next time {name}!')
+        game.winner = "Computer"
 
 
 def main():
@@ -225,6 +229,7 @@ def main():
                 player_move(board, columns, player_xo, column_full)
             win, winner = check_win(board, player_xo, turn)
             draw = check_draw(column_full)
+            game.moves += 1
         else:
             # Computer Move
             board, columns, column_full =\
@@ -233,11 +238,24 @@ def main():
             draw = check_draw(column_full)
         turn += 1
         turn = turn % 2
-        print(f'Draw: {draw}, Win: {win}')
         if draw:
             break
     display_board(board)
-    process_win(winner, PLAYER, player_xo, name, draw)
+    process_win(winner, PLAYER, player_xo, name, draw, game)
+    game.board = board
+    game.end = datetime.now()
+    # game.duration = timedelta(datetime.time(game.end) -
+                            #   datetime.time(game.start))
+    print(f'Well done {game.player}')
+    print(f'You payed {game.xo}')
+    print(f'Your game ID is: {game.id}')
+    print(f'The winner was : {game.winner}')
+    print(f'The winner made {game.moves} moves.')
+    print("The final board was ...")
+    display_board(game.board)
+    print(f'The game started at {game.start}')
+    print(f'The game ended at {game.end}')
+    # print(f'The game lasted {game.duration}')
     start_again(name)
 
 
