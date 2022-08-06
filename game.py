@@ -57,7 +57,7 @@ Good Luck {self.player}!')
     def display_game_data(self):
         """ Displays final game data in terminal"""
         print(f'Game ID: {self._id}')
-        print(f'The human player was: {self.player}')
+        print(f'The game was played by: {self.player}')
         print(f'{self.player} played: {self.xo}')
         print(f'The winner was: {self.winner}')
         print(f'{self.player} made {self.moves} moves.')
