@@ -19,6 +19,12 @@ class Game:
         self._duration = ""
         self._id = slugify(str(datetime.now()))
 
+    def welcome(self):
+        """ Initial Instructions """
+        print(f'To win, join four {self.xo}s:\n\
+horizontaly, verticaly or diagonaly.\n\
+Good Luck {self.player}!')
+
     def final_update(self, board):
         """ Add final data in string form to game object:
         The final state of board,

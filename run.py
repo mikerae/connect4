@@ -59,7 +59,6 @@ def check_player_input(column, columns):
                 f'Column {column} is full, please choose another column'
             )
         else:
-            print(f'You chose column {column}...')
             return True
     except ValueError as e:
         print(f'{e}')
@@ -140,7 +139,7 @@ def check_draw(column_full):
 def start_again(name):
     """ Gives player option to return to the top of the program """
     again_set = ("Y", "N")
-    again = input("Would you like to start again? Type 'y' or 'n'")
+    again = input("Would you like to start again? Type 'y' or 'n': ")
     try:
         if again == "" or again.isspace():
             raise ValueError(
@@ -148,7 +147,7 @@ def start_again(name):
             )
         elif again.upper() not in again_set:
             raise ValueError(
-                'Please type "y" or "n":'
+                'Please type "y" or "n": '
             )
     except ValueError as e:
         print(f'{e}')
@@ -156,7 +155,7 @@ def start_again(name):
     if again.upper() == "Y":
         main()
     else:
-        print(f'Thanks for playing, {name},\nSee you again soon!\n')
+        print(f'Thanks for playing, {name}\nSee you again soon!\n')
 
 
 def process_win(winner, PLAYER, name, draw, game):
@@ -193,7 +192,7 @@ def main():
     turn = 0
 
     while name == "" or name.isspace():
-        name = input("Please tell me your name...\n")
+        name = input("Please tell me your name: ")
         if name == "" or name.isspace():
             print("Please try again...")
     print(f'\nHello {name}')
@@ -204,7 +203,7 @@ def main():
         if (player_xo.isspace() or player_xo == ""):
             continue
         elif player_xo.upper() == "X":
-            print(f'\nYou go first {name}, Make your move...\n')
+            print(f'\nYou go first {name}\n')
             player_xo = "X"
             computer_xo = "O"
             PLAYER = 0
@@ -217,7 +216,7 @@ def main():
             not_valid = False
 
     game = Game(board, name, player_xo)
-    print(f' Hi {game.player}, your game started at {game.start}')
+    game.welcome()
 
     # Main game loop
     while not win:
