@@ -119,7 +119,7 @@ def main():
     display_board(board)
     game.process_win(winner, PLAYER, draw)
     game.final_update(board)
-    game.display_game_data()
+    # game.display_game_data()
     game.store_game_data(SHEET)
     start_again(name)
 

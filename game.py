@@ -10,7 +10,7 @@ from slugify import slugify
 class Game:
     """ Game data storage """
     def __init__(self, board, player, xo):
-        self.board = board
+        self._id = slugify(str(datetime.now()))
         self.player = player
         self.xo = xo
         self.winner = ""
@@ -18,7 +18,7 @@ class Game:
         self.start = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
         self._end = ""
         self._duration = ""
-        self._id = slugify(str(datetime.now()))
+        self.board = board
 
     def welcome(self):
         """ Initial Instructions """
@@ -70,12 +70,31 @@ Good Luck {self.player}!')
         """
         Stores current game data in a
         google whorsheet (connect4) on
-        google drive
+        google drive. Solution to storing board
+        list from Stack Overflow (https://stackoverflow.
+        com/questions/34400635/
+        how-to-write-a-table-list-of-lists-
+        to-google-spreadsheet-using-gspread)
         """
-        SHEET.add_worksheet(self._id, rows=100, cols=50)
-        worksheet_list = SHEET.worksheets()
-        print("store_game_data is called")
-        print(f'The worksheets are: {worksheet_list}')
+        SHEET.add_worksheet(self._id, rows=15, cols=7)
+        worksheet = SHEET.worksheet(self._id)
+        game_data = [
+            ["game_id", self._id],
+            ["player", self.player],
+            ["xo", self.xo],
+            ["winner", self.winner],
+            ["moves", self.moves],
+            ["start", self.start],
+            ["end", self._end],
+            ["duration", self._duration]
+        ]
+        worksheet.update(game_data)
+        # Code from @Burnash (gspread developer)
+        SHEET.values_update(
+            f'{self._id}!A10',
+            params={'valueInputOption': 'RAW'},
+            body={'values': self.board}
+        )
 
 
 def build_empty_board(board):
