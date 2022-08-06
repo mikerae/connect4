@@ -4,7 +4,6 @@ via google worksheets.
 """
 from datetime import datetime
 from slugify import slugify
-# from run import display_board
 
 
 class Game:
@@ -15,24 +14,34 @@ class Game:
         self.xo = xo
         self.winner = ""
         self.moves = 0
-        self.start = datetime.now()
-        self.end = 0
-        self.duration = 0
-        self.id = slugify(str(self.start))
+        self.start = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+        self._end = ""
+        self._duration = ""
+        self._id = slugify(str(datetime.now()))
 
     def final_update(self, board):
-        """ Add final data to game object """
+        """ Add final data in string form to game object:
+        The final state of board,
+        The end time of the game,
+        The calculated duration of the game in minuets and seconds
+        """
         self.board = board
-        self.end = datetime.now()
-        self.duration = 0
+        self._end = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+        # Calculate and set game duration
+        start_dt = datetime.strptime(self.start, "%d/%m/%Y, %H:%M:%S")
+        end_dt = datetime.strptime(self._end, "%d/%m/%Y, %H:%M:%S")
+        delta = end_dt - start_dt
+        delta_min_sec = divmod(delta.total_seconds(), 60)
+        self._duration = f'{int(delta_min_sec[0])}m {int(delta_min_sec[1])}s'
 
     def display_game_data(self):
         """ Displays final game data in terminal"""
-        print(f'The winner was : {self.winner}')
-        print(f'You payed {self.xo}')
-        print(f'You made {self.moves} moves.')
-        print(f'Your game ID is: {self.id}')
+        print(f'Game ID: {self._id}')
+        print(f'The human player was: {self.player}')
+        print(f'{self.player} played: {self.xo}')
+        print(f'The winner was: {self.winner}')
+        print(f'{self.player} made {self.moves} moves.')
         print(f'The game started at {self.start}')
-        print(f'The game ended at {self.end}')
+        print(f'The game ended at {self._end}')
+        print(f'The game lasted {self._duration}')
         print(f'The raw board data is {self.board}')
-        # print(f'The game lasted {game.duration}')

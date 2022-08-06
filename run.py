@@ -4,7 +4,6 @@ Mike Rae
 August 2022
 """
 from random import randint
-from datetime import datetime, timedelta
 from stacks import Stack
 from game import Game
 
@@ -157,21 +156,20 @@ def start_again(name):
     if again.upper() == "Y":
         main()
     else:
-        print(f'Thanks for playing, {name},\n See you again soon!')
+        print(f'Thanks for playing, {name},\nSee you again soon!\n')
 
 
-def process_win(winner, PLAYER, player_xo, name, draw, game):
+def process_win(winner, PLAYER, name, draw, game):
     """ Displays winner message """
     if draw:
         print(f'Its a draw! Nice game {name}.')
         game.winner = "draw"
     elif PLAYER == winner:
-        print(f' {name}, you have won!\n\
-            You played {player_xo}')
+        print(f'{name}, you have won!\n')
         game.winner = name
     else:
-        print(f'I won this time!\n\
-            Better luch next time {name}!')
+        print('I won this time!')
+        print(f'Better luck next time {name}!\n')
         game.winner = "Computer"
 
 
@@ -241,7 +239,7 @@ def main():
         if draw:
             break
     display_board(board)
-    process_win(winner, PLAYER, player_xo, name, draw, game)
+    process_win(winner, PLAYER, name, draw, game)
     game.final_update(board)
     game.display_game_data()
     start_again(name)
