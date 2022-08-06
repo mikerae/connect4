@@ -3,9 +3,27 @@ Connect4 game for player v. computer
 Mike Rae
 August 2022
 """
+import gspread
+from google.oauth2.service_account import Credentials
 from stacks import Stack
 from game import Game, build_empty_board, display_board,\
      player_move, computer_move, check_win, check_draw
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open("connect4-test")
+
+data = SHEET.worksheet("data")
+test_data = data.get_all_values()
+
+print(test_data)
 
 
 def build_empty_cols(columns):
@@ -110,4 +128,4 @@ def main():
     start_again(name)
 
 
-main()
+# main()
