@@ -23,8 +23,6 @@ SHEET = GSPREAD_CLIENT.open("connect4-test")
 data = SHEET.worksheet("data")
 test_data = data.get_all_values()
 
-print(test_data)
-
 
 def build_empty_cols(columns):
     """ Initialises empty column Stacks """
@@ -37,7 +35,7 @@ def build_empty_cols(columns):
 def start_again(name):
     """ Gives player option to return to the top of the program """
     again_set = ("Y", "N")
-    again = input("Would you like to start again? Type 'y' or 'n': ")
+    again = input("Would you like to start again? Type 'y' or 'n': \n")
     try:
         if again == "" or again.isspace():
             raise ValueError(
@@ -76,14 +74,14 @@ def main():
     turn = 0
 
     while name == "" or name.isspace():
-        name = input("Please tell me your name: ")
+        name = input("Please tell me your name: \n")
         if name == "" or name.isspace():
             print("Please try again...")
     print(f'\nHello {name}')
 
     not_valid = True
     while not_valid:
-        player_xo = input("Type X to play first, or O to play second: ")
+        player_xo = input("Type X to play first, or O to play second: \n")
         if (player_xo.isspace() or player_xo == ""):
             continue
         elif player_xo.upper() == "X":

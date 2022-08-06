@@ -119,7 +119,7 @@ def check_player_input(column, columns):
 def player_move(board, columns, player_xo, column_full):
     """ Player makes a move"""
     display_board(board)
-    column = (input("Choose column 1 - 7: "))
+    column = (input("Choose column 1 - 7: \n"))
     if check_player_input(column, columns):
         columns[int(column) - 1].push(player_xo)
         board[6 - len(columns[int(column) - 1])][int(column) - 1] = \
