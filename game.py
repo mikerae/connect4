@@ -66,7 +66,7 @@ Good Luck {self.player}!')
         print(f'The game lasted {self._duration}')
         print(f'The raw board data is {self.board}')
 
-    def store_game_data(self, SHEET):
+    def write_game_data(self, SHEET):
         """
         Stores current game data in a
         google whorsheet (connect4) on
@@ -95,6 +95,17 @@ Good Luck {self.player}!')
             params={'valueInputOption': 'RAW'},
             body={'values': self.board}
         )
+
+    def read_game_data(self, worksheet):
+        """ Reads game data into game object """
+        self._id = worksheet.acell('B1').value
+        self.player = worksheet.acell('B2').value
+        self.xo = worksheet.acell('B3').value
+        self.winner = worksheet.acell('B4').value
+        self.moves = worksheet.acell('B5').value
+        self.start = worksheet.acell('B6').value
+        self._end = worksheet.acell('B7').value
+        self._duration = worksheet.acell('B8').value
 
 
 def build_empty_board(board):

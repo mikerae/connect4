@@ -120,8 +120,14 @@ def main():
     game.process_win(winner, PLAYER, draw)
     game.final_update(board)
     # game.display_game_data()
-    game.store_game_data(SHEET)
+    # game.write_game_data(SHEET)
+    # read_game = Game([], "", "")
+    # read_game.read_game_data("2022-08-06-17-10-27-776542")
+    # read_game.display_game_data()
     start_again(name)
 
 
-main()
+# main()
+read_game = Game([], "", "")
+read_game.read_game_data(SHEET.get_worksheet(0))
+read_game.display_game_data()
