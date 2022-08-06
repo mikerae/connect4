@@ -66,6 +66,17 @@ Good Luck {self.player}!')
         print(f'The game lasted {self._duration}')
         print(f'The raw board data is {self.board}')
 
+    def store_game_data(self, SHEET):
+        """
+        Stores current game data in a
+        google whorsheet (connect4) on
+        google drive
+        """
+        SHEET.add_worksheet(self._id, rows=100, cols=50)
+        worksheet_list = SHEET.worksheets()
+        print("store_game_data is called")
+        print(f'The worksheets are: {worksheet_list}')
+
 
 def build_empty_board(board):
     """ Initialises empty board"""

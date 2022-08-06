@@ -18,10 +18,7 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open("connect4-test")
-
-data = SHEET.worksheet("data")
-test_data = data.get_all_values()
+SHEET = GSPREAD_CLIENT.open("connect4")
 
 
 def build_empty_cols(columns):
@@ -123,6 +120,7 @@ def main():
     game.process_win(winner, PLAYER, draw)
     game.final_update(board)
     game.display_game_data()
+    game.store_game_data(SHEET)
     start_again(name)
 
 
