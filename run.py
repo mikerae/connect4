@@ -126,4 +126,4 @@ def main():
     start_again(name)
 
 
-# main()
+main()
