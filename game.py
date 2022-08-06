@@ -64,7 +64,7 @@ Good Luck {self.player}!')
         print(f'The game started at {self.start}')
         print(f'The game ended at {self._end}')
         print(f'The game lasted {self._duration}')
-        print(f'The raw board data is {self.board}')
+        display_board(self.board)
 
     def write_game_data(self, SHEET):
         """
@@ -106,6 +106,7 @@ Good Luck {self.player}!')
         self.start = worksheet.acell('B6').value
         self._end = worksheet.acell('B7').value
         self._duration = worksheet.acell('B8').value
+        self.board = worksheet.get_values("A10:G15")
 
 
 def build_empty_board(board):
