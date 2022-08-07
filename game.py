@@ -17,7 +17,7 @@ class Game:
         self.moves = 0
         self.start = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
         self._end = ""
-        self._duration = ""
+        self._duration = 0.0
         self.board = board
 
     def welcome(self):
@@ -47,12 +47,11 @@ Good Luck {self.player}!')
         """
         self.board = board
         self._end = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-        # Calculate and set game duration
+        # Calculate and set game duration (in seconds)
         start_dt = datetime.strptime(self.start, "%d/%m/%Y, %H:%M:%S")
         end_dt = datetime.strptime(self._end, "%d/%m/%Y, %H:%M:%S")
         delta = end_dt - start_dt
-        delta_min_sec = divmod(delta.total_seconds(), 60)
-        self._duration = f'{int(delta_min_sec[0])}m {int(delta_min_sec[1])}s'
+        self._duration = delta.total_seconds()
 
     def display_game_data(self):
         """ Displays final game data in terminal"""
@@ -63,7 +62,10 @@ Good Luck {self.player}!')
         print(f'{self.player} made {self.moves} moves.')
         print(f'The game started at {self.start}')
         print(f'The game ended at {self._end}')
-        print(f'The game lasted {self._duration}')
+        delta_min_sec = divmod(float(self._duration), 60)
+        mins = int(delta_min_sec[0])
+        secs = int(delta_min_sec[1])
+        print(f'The game lasted {mins}m {secs}s')
         display_board(self.board)
 
     def write_game_data(self, SHEET):

@@ -6,9 +6,9 @@ August 2022
 import gspread
 from google.oauth2.service_account import Credentials
 import stacks
-from utils import get_played_games_list, display_games_list
+from utils import choose_game
 from game import Game, build_empty_board, display_board,\
-     player_move, computer_move, check_win, check_draw
+    player_move, computer_move, check_win, check_draw
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -69,6 +69,8 @@ def main():
             print("Please try again...")
     print(f'\nHello {name}')
 
+    choose_game(SHEET)
+
     not_valid = True
     while not_valid:
         player_xo = input("Type X to play first, or O to play second: \n")
@@ -117,7 +119,4 @@ def main():
     start_again(name)
 
 
-# main()
-
-played_games = get_played_games_list(SHEET)
-display_games_list(played_games)
+main()
