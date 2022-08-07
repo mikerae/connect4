@@ -58,7 +58,7 @@ Good Luck {self.player}!')
         """ Displays final game data in terminal"""
         print(Fore.WHITE + f'Game ID: {self._id}')
         print(f'The game was played by: {self.player}')
-        print(f'{self.player} played: {self.xo}')
+        print(f'{self.player} played: {self.xo}' + Fore.WHITE)
         print(f'The winner was: {self.winner}')
         print(f'{self.player} made {self.moves} moves.')
         print(f'The game started at {self.start}')
