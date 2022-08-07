@@ -5,7 +5,7 @@ August 2022
 """
 import gspread
 from google.oauth2.service_account import Credentials
-from stacks import Stack
+import stacks
 from game import Game, build_empty_board, display_board,\
      player_move, computer_move, check_win, check_draw
 
@@ -19,14 +19,6 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("connect4")
-
-
-def build_empty_cols(columns):
-    """ Initialises empty column Stacks """
-    for col in range(7):
-        col = Stack()
-        columns.append(col)
-    return columns
 
 
 def start_again(name):
@@ -63,7 +55,7 @@ def main():
     board = []
     columns = []
     board = build_empty_board(board)
-    columns = build_empty_cols(columns)
+    columns = stacks.build_empty_cols(columns)
     win = False
     draw = False
     column_full = []

@@ -27,3 +27,12 @@ class Stack:
     def peek(self):
         """ Get last element of stack """
         return self._list[-1]
+
+
+# Code by MR
+def build_empty_cols(columns):
+    """ Initialises empty column Stacks """
+    for col in range(7):
+        col = Stack()
+        columns.append(col)
+    return columns
