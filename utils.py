@@ -2,6 +2,7 @@
 Utilitie functions and program navigation functions
 """
 from game import Game
+from colorama import Fore
 
 
 def get_played_games_list(sheet):
@@ -28,7 +29,7 @@ Here is a list of games you can review...\n")
     display_games_list(played_games)
     played_game = Game([], "", "")
     while True:
-        print(f'Choose 0 - {len(played_games) - 1} to select a game,\n\n\
+        print(Fore.WHITE + f'Choose 0 - {len(played_games) - 1} to select a game,\n\n\
 Or choose "N" to play a new game.')
         choice = input('Please make your choice :\n')
         if (choice.isspace() or choice == ""):

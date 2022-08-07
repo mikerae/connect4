@@ -5,6 +5,7 @@ via google worksheets.
 from datetime import datetime
 from random import randint
 from slugify import slugify
+from colorama import Fore
 
 
 class Game:
@@ -29,13 +30,13 @@ Good Luck {self.player}!')
     def process_win(self, winner, PLAYER, draw):
         """ Displays winner message """
         if draw:
-            print(f'Its a draw! Nice game {self.player}.')
+            print(Fore.WHITE + f'Its a draw! Nice game {self.player}.')
             self.winner = "draw"
         elif PLAYER == winner:
-            print(f'{self.player}, you have won!\n')
+            print(Fore.WHITE + f'{self.player}, you have won!\n')
             self.winner = self.player
         else:
-            print('I won this time!')
+            print(Fore.WHITE + 'I won this time!')
             print(f'Better luck next time {self.player}!\n')
             self.winner = "Computer"
 
@@ -55,7 +56,7 @@ Good Luck {self.player}!')
 
     def display_game_data(self):
         """ Displays final game data in terminal"""
-        print(f'Game ID: {self._id}')
+        print(Fore.WHITE + f'Game ID: {self._id}')
         print(f'The game was played by: {self.player}')
         print(f'{self.player} played: {self.xo}')
         print(f'The winner was: {self.winner}')
@@ -124,13 +125,13 @@ def display_board(board):
     dec_row = ("----" * 7) + "-\n"
     col_nums = "  1   2   3   4   5   6   7"
     board_row = ""
-    print(dec_row)
-    print(col_nums)
+    print(Fore.BLUE + dec_row)
+    print(Fore.WHITE + col_nums)
     for row in board:
         for cell in row:
-            board_row += f'| {cell} '
-        board_row += "|\n"
-    print(board_row)
+            board_row += f'| {cell} ' + Fore.BLUE
+        board_row += Fore.BLUE + "|\n"
+    print(Fore.BLUE + board_row)
     print(dec_row)
 
 
@@ -163,7 +164,7 @@ def check_player_input(column, columns):
 def player_move(board, columns, player_xo, column_full):
     """ Player makes a move"""
     display_board(board)
-    column = (input("Choose column 1 - 7: \n"))
+    column = (input(Fore.WHITE + "Choose column 1 - 7: \n"))
     if check_player_input(column, columns):
         columns[int(column) - 1].push(player_xo)
         board[6 - len(columns[int(column) - 1])][int(column) - 1] = \

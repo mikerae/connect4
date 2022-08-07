@@ -5,6 +5,7 @@ August 2022
 """
 import gspread
 from google.oauth2.service_account import Credentials
+from colorama import init, deinit, Fore
 import stacks
 from utils import choose_game
 from game import Game, build_empty_board, display_board,\
@@ -21,11 +22,14 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("connect4")
 
+init()  # initiates colorama
+
 
 def start_again(name):
     """ Gives player option to return to the top of the program """
     again_set = ("Y", "N")
-    again = input("Would you like to start again? Type 'y' or 'n': \n")
+    again = input(Fore.WHITE +
+                  "Would you like to start again? Type 'y' or 'n': \n")
     try:
         if again == "" or again.isspace():
             raise ValueError(
@@ -46,9 +50,9 @@ def start_again(name):
 
 def main():
     """ Main Game """
-    print("\n********************")
-    print(" Welcome to Connect4")
-    print("********************\n")
+    print(Fore.BLUE + "\n********************")
+    print(Fore.YELLOW + " Welcome to Connect4")
+    print(Fore.BLUE + "********************\n")
 
     name = ""
     player_xo = ""
@@ -64,7 +68,7 @@ def main():
     turn = 0
 
     while name == "" or name.isspace():
-        name = input("Please tell me your name: \n")
+        name = input(Fore.WHITE + "Please tell me your name: \n")
         if name == "" or name.isspace():
             print("Please try again...")
     print(f'\nHello {name}')
@@ -78,14 +82,14 @@ def main():
             continue
         elif player_xo.upper() == "X":
             print(f'\nYou go first {name}\n')
-            player_xo = "X"
-            computer_xo = "O"
+            player_xo = Fore.RED + "X" + Fore.WHITE
+            computer_xo = Fore.YELLOW + "O" + Fore.WHITE
             PLAYER = 0
             not_valid = False
         elif player_xo.upper() == "O":
             print(f"\nI'll  go first then, {name}...\n")
-            player_xo = "O"
-            computer_xo = "X"
+            player_xo = Fore.YELLOW + "O" + Fore.WHITE
+            computer_xo = Fore.RED + "X" + Fore.WHITE
             PLAYER = 1
             not_valid = False
 
@@ -120,3 +124,5 @@ def main():
 
 
 main()
+
+deinit()  # Restores terminal text output to system colours
