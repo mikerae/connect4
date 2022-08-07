@@ -6,7 +6,7 @@ August 2022
 import gspread
 from google.oauth2.service_account import Credentials
 import stacks
-from utils import get_played_games_list
+from utils import get_played_games_list, display_games_list
 from game import Game, build_empty_board, display_board,\
      player_move, computer_move, check_win, check_draw
 
@@ -120,4 +120,4 @@ def main():
 # main()
 
 played_games = get_played_games_list(SHEET)
-print(played_games)
+display_games_list(played_games)

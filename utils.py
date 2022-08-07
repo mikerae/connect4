@@ -1,7 +1,6 @@
 """
 Utilitie functions and program navigation functions
 """
-import gspread
 
 
 def get_played_games_list(games_ss):
@@ -11,3 +10,12 @@ def get_played_games_list(games_ss):
     for w in wks:
         wks_titles.append(w.title)
     return wks_titles
+
+
+def display_games_list(list):
+    """ Displays a list of played games
+    with index """
+    list_len = len(list)
+    i = 0
+    for idl, l in enumerate(list):
+        print(f'type {idl} to select {l}')
