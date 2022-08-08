@@ -8,7 +8,7 @@ from google.oauth2.service_account import Credentials
 from colorama import init, deinit, Fore
 import stacks
 from utils import choose_game
-from ai import computer_move
+import ai
 from game import Game, build_empty_board, display_board,\
     player_move, check_win, check_draw
 
@@ -109,7 +109,7 @@ def main():
         else:
             # Computer Move
             board, columns, column_full =\
-                computer_move(board, columns, computer_xo, column_full)
+                ai.computer_move(board, columns, computer_xo, column_full)
             win, winner = check_win(board, computer_xo, turn)
             draw = check_draw(column_full)
         turn += 1
@@ -119,7 +119,6 @@ def main():
     display_board(board)
     game.process_win(winner, PLAYER, draw)
     game.final_update(board)
-    # game.display_game_data()
     game.write_game_data(SHEET)
     start_again(name)
 
