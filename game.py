@@ -3,7 +3,6 @@ The game Class provides the functionality to store game data in the cloud
 via google worksheets.
 """
 from datetime import datetime
-from random import randint
 from slugify import slugify
 from colorama import Fore
 
@@ -173,20 +172,6 @@ def player_move(board, columns, player_xo, column_full):
             column_full.append(True)
     else:
         player_move(board, columns, player_xo, column_full)
-    return board, columns, column_full
-
-
-def computer_move(board, columns, computer_xo, column_full):
-    """ Computer makes a move """
-    col = randint(0, 6)
-    if len(columns[col]) < 6:
-        columns[col].push(computer_xo)
-        board[6 - len(columns[col])][col] = \
-            columns[col].peek()
-        if len(columns[col]) >= 6:
-            column_full.append(True)
-    else:
-        computer_move(board, columns, computer_xo, column_full)
     return board, columns, column_full
 
 

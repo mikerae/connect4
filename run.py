@@ -8,8 +8,9 @@ from google.oauth2.service_account import Credentials
 from colorama import init, deinit, Fore
 import stacks
 from utils import choose_game
+from ai import computer_move
 from game import Game, build_empty_board, display_board,\
-    player_move, computer_move, check_win, check_draw
+    player_move, check_win, check_draw
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
