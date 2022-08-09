@@ -4,7 +4,9 @@ Hoever in the interests of fun and challenge, I have followed
 Keith Galli: How to Program a Connect 4 AI
 (https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6)
 All code is initially copied from his walkthrough, then modied
-were needed to run with my other code. Sometimes, extnsive revision is needed.
+were needed to run with my other code. Sometimes, usually because 
+Keith uses a Numpy matrix board object and I use a list of lists board object,
+extnsive revision is needed due to mismatching of indexes.
 Keith developes code for the following:
 - a Static Scoring Method ( a method of assesising
 the current value of the board)
@@ -47,7 +49,21 @@ def score_position(board, piece):
                 score += 100
             elif window.count(piece) == 3 and window.count(EMPTY) == 1:
                 score += 10
-        return score
+
+    # Score Verticle
+    for c in range(COLUMN_COUNT):
+        col_array = []
+        for row in board:
+            cell = row[c]
+            col_array.append(cell)
+        col_array.reverse()
+        for r in range(ROW_COUNT - 3):
+            window = col_array[r: (r + WINDOW_LENGTH)]
+            if window.count(piece) == 4:
+                score += 100
+            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+                score += 10
+    return score
 
 
 def is_valid_location(board, col):
