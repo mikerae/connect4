@@ -1,19 +1,7 @@
 """
-Programing AI is well beyond the scope of this project.
-Hoever in the interests of fun and challenge, I have followed
-Keith Galli: How to Program a Connect 4 AI
+AI code derived from Keith Galli: How to Program a Connect 4 AI
 (https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6)
-All code is initially copied from his walkthrough, then modied
-were needed to run with my other code. Sometimes, usually because 
-Keith uses a Numpy matrix board object and I use a list of lists board object,
-extnsive revision is needed due to mismatching of indexes.
-Keith developes code for the following:
-- a Static Scoring Method ( a method of assesising
-the current value of the board)
-- the MiniMAx algorythum ( where the AI analyses future moves)
-- Alpha Beta pruning ( reducing the number of
-comparisons the minimax algorythum needs to make)
-Mike Rae 8/8/2022
+See Readme
 """
 import random
 
@@ -40,29 +28,48 @@ def drop_piece(board, row, col, piece):
 def score_position(board, piece):
     """ Calculates board Static Scoring Method """
     score = 0
-    # Score Horizontal
-    for r in range(ROW_COUNT):
-        row_array = board[(ROW_COUNT-1) - r]
+    # # Score Horizontal
+    # for r in range(ROW_COUNT):
+    #     row_array = board[(ROW_COUNT-1) - r]
+    #     for c in range(COLUMN_COUNT - 3):
+    #         window = row_array[c: (c + WINDOW_LENGTH)]
+    #         if window.count(piece) == 4:
+    #             score += 100
+    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+    #             score += 10
+
+    # # Score Verticle
+    # for c in range(COLUMN_COUNT):
+    #     col_array = []
+    #     for row in board:
+    #         cell = row[c]
+    #         col_array.append(cell)
+    #     col_array.reverse()
+    #     for r in range(ROW_COUNT - 3):
+    #         window = col_array[r: (r + WINDOW_LENGTH)]
+    #         if window.count(piece) == 4:
+    #             score += 100
+    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+    #             score += 10
+
+    # Score Positive Sloped Diagonals
+    for r in range(ROW_COUNT - 3):
         for c in range(COLUMN_COUNT - 3):
-            window = row_array[c: (c + WINDOW_LENGTH)]
+            window = [board[((ROW_COUNT-1) - r) - i][c + i]
+                      for i in range(WINDOW_LENGTH)]
             if window.count(piece) == 4:
                 score += 100
             elif window.count(piece) == 3 and window.count(EMPTY) == 1:
                 score += 10
 
-    # Score Verticle
-    for c in range(COLUMN_COUNT):
-        col_array = []
-        for row in board:
-            cell = row[c]
-            col_array.append(cell)
-        col_array.reverse()
-        for r in range(ROW_COUNT - 3):
-            window = col_array[r: (r + WINDOW_LENGTH)]
-            if window.count(piece) == 4:
-                score += 100
-            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-                score += 10
+    # # Score Negetively Sloped Diagonals
+    # for r in range(ROW_COUNT - 3):
+    #     for c in range(COLUMN_COUNT - 3):
+    #         window = [board[(r + 3) - i][c + i] for i in range(WINDOW_LENGTH)]
+    #         if window.count(piece) == 4:
+    #             score += 100
+    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+    #             score += 10
     return score
 
 
