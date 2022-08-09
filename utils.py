@@ -1,8 +1,8 @@
 """
 Utilitie functions and program navigation functions
 """
-from game import Game
 from colorama import Fore
+from game import Game
 
 
 def get_played_games_list(sheet):
@@ -30,16 +30,17 @@ Here is a list of games you can review...\n")
     played_game = Game([], "", "")
     while True:
         print(Fore.WHITE + f'Choose 0 - {len(played_games) - 1} to select a game,\n\n\
-Or choose "N" to play a new game.')
-        choice = input('Please make your choice :\n')
-        if (choice.isspace() or choice == ""):
-            continue
-        elif choice.upper() == "N":
-            break
-        elif 0 <= int(choice) <= len(played_games):
-            wks = sheet.get_worksheet(int(choice))
-            played_game.read_game_data(wks)
-            played_game.display_game_data()
-            continue
-        else:
+    Or choose "N" to play a new game.')
+        try:
+            choice = input('Please make your choice :\n')
+            if (choice.isspace() or choice == ""):
+                raise ValueError
+            elif choice.upper() == "N":
+                break
+            elif 0 <= int(choice) <= len(played_games):
+                wks = sheet.get_worksheet(int(choice))
+                played_game.read_game_data(wks)
+                played_game.display_game_data()
+                continue
+        except ValueError:
             continue

@@ -93,6 +93,8 @@ def main():
             computer_xo = Fore.RED + "X" + Fore.WHITE
             PLAYER = 1
             not_valid = False
+        else:
+            continue
 
     game = Game(board, name, player_xo)
     game.welcome()
