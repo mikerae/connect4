@@ -28,29 +28,29 @@ def drop_piece(board, row, col, piece):
 def score_position(board, piece):
     """ Calculates board Static Scoring Method """
     score = 0
-    # # Score Horizontal
-    # for r in range(ROW_COUNT):
-    #     row_array = board[(ROW_COUNT-1) - r]
-    #     for c in range(COLUMN_COUNT - 3):
-    #         window = row_array[c: (c + WINDOW_LENGTH)]
-    #         if window.count(piece) == 4:
-    #             score += 100
-    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-    #             score += 10
+    # Score Horizontal
+    for r in range(ROW_COUNT):
+        row_array = board[(ROW_COUNT-1) - r]
+        for c in range(COLUMN_COUNT - 3):
+            window = row_array[c: (c + WINDOW_LENGTH)]
+            if window.count(piece) == 4:
+                score += 100
+            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+                score += 10
 
-    # # Score Verticle
-    # for c in range(COLUMN_COUNT):
-    #     col_array = []
-    #     for row in board:
-    #         cell = row[c]
-    #         col_array.append(cell)
-    #     col_array.reverse()
-    #     for r in range(ROW_COUNT - 3):
-    #         window = col_array[r: (r + WINDOW_LENGTH)]
-    #         if window.count(piece) == 4:
-    #             score += 100
-    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-    #             score += 10
+    # Score Verticle
+    for c in range(COLUMN_COUNT):
+        col_array = []
+        for row in board:
+            cell = row[c]
+            col_array.append(cell)
+        col_array.reverse()
+        for r in range(ROW_COUNT - 3):
+            window = col_array[r: (r + WINDOW_LENGTH)]
+            if window.count(piece) == 4:
+                score += 100
+            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+                score += 10
 
     # Score Positive Sloped Diagonals
     for r in range(ROW_COUNT - 3):
@@ -62,14 +62,15 @@ def score_position(board, piece):
             elif window.count(piece) == 3 and window.count(EMPTY) == 1:
                 score += 10
 
-    # # Score Negetively Sloped Diagonals
-    # for r in range(ROW_COUNT - 3):
-    #     for c in range(COLUMN_COUNT - 3):
-    #         window = [board[(r + 3) - i][c + i] for i in range(WINDOW_LENGTH)]
-    #         if window.count(piece) == 4:
-    #             score += 100
-    #         elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-    #             score += 10
+    # Score Negetively Sloped Diagonals
+    for r in range(ROW_COUNT - 3):
+        for c in range(COLUMN_COUNT - 3):
+            window = [board[(ROW_COUNT-1) - (3 + r) + i][c + i]
+                      for i in range(WINDOW_LENGTH)]
+            if window.count(piece) == 4:
+                score += 100
+            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+                score += 10
     return score
 
 
