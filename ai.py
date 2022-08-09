@@ -25,7 +25,24 @@ def drop_piece(board, row, col, piece):
     return board
 
 
-def score_position(board, piece):
+def evaluate_window(window, piece, player_xo):
+    score = 0
+
+    opp_piece = player_xo
+
+    if window.count(piece) == 4:
+        score += 100
+    elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+        score += 10
+    elif window.count(piece) == 2 and window.count(EMPTY == 2):
+        score += 5
+
+    if window.count(opp_piece) == 3 and window.count(EMPTY) == 1:
+        score -= 8
+    return score
+
+
+def score_position(board, piece, player_xo):
     """ Calculates board Static Scoring Method """
     score = 0
     # Score Horizontal
@@ -33,10 +50,7 @@ def score_position(board, piece):
         row_array = board[(ROW_COUNT-1) - r]
         for c in range(COLUMN_COUNT - 3):
             window = row_array[c: (c + WINDOW_LENGTH)]
-            if window.count(piece) == 4:
-                score += 100
-            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-                score += 10
+            score += evaluate_window(window, piece, player_xo)
 
     # Score Verticle
     for c in range(COLUMN_COUNT):
@@ -47,30 +61,21 @@ def score_position(board, piece):
         col_array.reverse()
         for r in range(ROW_COUNT - 3):
             window = col_array[r: (r + WINDOW_LENGTH)]
-            if window.count(piece) == 4:
-                score += 100
-            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-                score += 10
+            score += evaluate_window(window, piece, player_xo)
 
     # Score Positive Sloped Diagonals
     for r in range(ROW_COUNT - 3):
         for c in range(COLUMN_COUNT - 3):
             window = [board[((ROW_COUNT-1) - r) - i][c + i]
                       for i in range(WINDOW_LENGTH)]
-            if window.count(piece) == 4:
-                score += 100
-            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-                score += 10
+            score += evaluate_window(window, piece, player_xo)
 
     # Score Negetively Sloped Diagonals
     for r in range(ROW_COUNT - 3):
         for c in range(COLUMN_COUNT - 3):
             window = [board[(ROW_COUNT-1) - (3 + r) + i][c + i]
                       for i in range(WINDOW_LENGTH)]
-            if window.count(piece) == 4:
-                score += 100
-            elif window.count(piece) == 3 and window.count(EMPTY) == 1:
-                score += 10
+            score += evaluate_window(window, piece, player_xo)
     return score
 
 
@@ -88,7 +93,7 @@ def get_valid_locations(board):
     return valid_locations
 
 
-def pick_best_move(board, piece):
+def pick_best_move(board, piece, player_xo):
     """ Calculate the best column for next move """
     valid_locations = get_valid_locations(board)
     best_score = 0
@@ -97,14 +102,14 @@ def pick_best_move(board, piece):
         row = get_next_open_row(board, col)
         temp_board = [x[:] for x in board]
         drop_piece(temp_board, row, col, piece)
-        score = score_position(temp_board, piece)
+        score = score_position(temp_board, piece, player_xo)
         if score > best_score:
             best_score = score
             best_col = col
     return best_col
 
 
-def computer_move(board, columns, computer_xo, column_full):
+def computer_move(board, columns, computer_xo, player_xo, column_full):
     """ Computor AI """
     # """ Computer makes a random move """
     # col = random.randint(0, 6)
@@ -116,7 +121,7 @@ def computer_move(board, columns, computer_xo, column_full):
     #         column_full.append(True)
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
-    col = pick_best_move(board, computer_xo)
+    col = pick_best_move(board, computer_xo, player_xo)
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
