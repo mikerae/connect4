@@ -40,14 +40,14 @@ def score_position(board, piece):
     score = 0
     # Score Horizontal
     for r in range(ROW_COUNT):
-        row_array = [i for i in list(board[r:])]
+        row_array = board[(ROW_COUNT-1) - r]
         for c in range(COLUMN_COUNT - 3):
-            window = row_array[c:c + WINDOW_LENGTH]
+            window = row_array[c: (c + WINDOW_LENGTH)]
             if window.count(piece) == 4:
                 score += 100
             elif window.count(piece) == 3 and window.count(EMPTY) == 1:
                 score += 10
-    return score
+        return score
 
 
 def is_valid_location(board, col):
