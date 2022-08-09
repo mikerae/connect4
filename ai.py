@@ -3,9 +3,9 @@ Programing AI is well beyond the scope of this project.
 Hoever in the interests of fun and challenge, I have followed
 Keith Galli: How to Program a Connect 4 AI
 (https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6)
-All code is copied from his walkthrough, exept where modifications
-were needed to run with my other code.
-Keith developes code fo rthe following:
+All code is initially copied from his walkthrough, then modied
+were needed to run with my other code. Sometimes, extnsive revision is needed.
+Keith developes code for the following:
 - a Static Scoring Method ( a method of assesising
 the current value of the board)
 - the MiniMAx algorythum ( where the AI analyses future moves)
@@ -24,13 +24,15 @@ EMPTY = "-"
 def get_next_open_row(board, col):
     """ For a given column, gets the next available row """
     for r in range(ROW_COUNT):
-        if board[5 - r][col] == "-":
-            return 5 - r
+        if board[5 - r][col] == EMPTY:
+            break
+    return 5 - r
 
 
 def drop_piece(board, row, col, piece):
     """ Populates the board with the next piece """
-    board[5 - row][col] = piece
+    board[row][col] = piece
+    return board
 
 
 def score_position(board, piece):
@@ -50,7 +52,7 @@ def score_position(board, piece):
 
 def is_valid_location(board, col):
     """ Checks column choice is not full """
-    return board[ROW_COUNT - 6][col] == "-"
+    return board[ROW_COUNT - 6][col] == EMPTY
 
 
 def get_valid_locations(board):
@@ -72,7 +74,6 @@ def pick_best_move(board, piece):
         temp_board = [x[:] for x in board]
         drop_piece(temp_board, row, col, piece)
         score = score_position(temp_board, piece)
-        print(f'score for col {col} is: {score}')
         if score > best_score:
             best_score = score
             best_col = col
