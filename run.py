@@ -112,16 +112,19 @@ def main():
             game.moves += 1
         else:
             # Computer Move
-            board, columns, column_full =\
+            board, columns, column_full, game_over =\
                 ai.computer_move(board, columns, computer_xo, column_full)
-            win = check_win(board, computer_xo)
-            if win:
-                winner = turn
-            draw = check_draw(column_full)
+            if game_over:
+                if check_draw(column_full):
+                    draw = True
+                    break
+                elif check_win(board, computer_xo):
+                    win = True
+                    winner = turn
+
         turn += 1
         turn = turn % 2
-        if draw:
-            break
+
     display_board(board)
     game.process_win(winner, PLAYER, draw)
     game.final_update(board)

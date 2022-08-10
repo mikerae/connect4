@@ -12,8 +12,8 @@ ROW_COUNT = 6
 COLUMN_COUNT = 7
 WINDOW_LENGTH = 4
 EMPTY = "-"
-X = Fore.RED + "X" + Fore.WHITE
-Y = Fore.YELLOW + "O" + Fore.WHITE
+xo_X = Fore.RED + "X" + Fore.WHITE
+xo_O = Fore.YELLOW + "O" + Fore.WHITE
 
 
 def get_next_open_row(board, col):
@@ -24,32 +24,33 @@ def get_next_open_row(board, col):
     return 5 - r
 
 
-def drop_piece(board, row, col, piece):
-    """ Populates the board with the next piece """
-    board[row][col] = piece
+def drop_xo(board, row, col, xo):
+    """ Populates the board with the next piece
+    for the purposes of minimax only """
+    board[row][col] = xo
     return board
 
 
-def evaluate_window(window, piece):
+def evaluate_window(window, xo):
     score = 0
-    if piece == X:
-        opp_piece = Y
+    if xo == xo_X:
+        opp_xo = xo_O
     else:
-        opp_piece = X
+        opp_xo = xo_X
 
-    if window.count(piece) == 4:
+    if window.count(xo) == 4:
         score += 100
-    elif window.count(piece) == 3 and window.count(EMPTY) == 1:
+    elif window.count(xo) == 3 and window.count(EMPTY) == 1:
         score += 10
-    elif window.count(piece) == 2 and window.count(EMPTY == 2):
+    elif window.count(xo) == 2 and window.count(EMPTY == 2):
         score += 5
 
-    if window.count(opp_piece) == 3 and window.count(EMPTY) == 1:
+    if window.count(opp_xo) == 3 and window.count(EMPTY) == 1:
         score -= 80
     return score
 
 
-def score_position(board, piece):
+def score_position(board, xo):
     """ Calculates board Static Scoring Method """
     score = 0
 
@@ -58,7 +59,7 @@ def score_position(board, piece):
     for row in board:
         cell = row[COLUMN_COUNT//2]
         center_array.append(cell)
-    center_count = center_array.count(piece)
+    center_count = center_array.count(xo)
     score += center_count * 6
 
     # Score Horizontal
@@ -66,7 +67,7 @@ def score_position(board, piece):
         row_array = board[(ROW_COUNT-1) - r]
         for c in range(COLUMN_COUNT - 3):
             window = row_array[c: (c + WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluate_window(window, xo)
 
     # Score Verticle
     for c in range(COLUMN_COUNT):
@@ -77,65 +78,83 @@ def score_position(board, piece):
         col_array.reverse()
         for r in range(ROW_COUNT - 3):
             window = col_array[r: (r + WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluate_window(window, xo)
 
     # Score Positive Sloped Diagonals
     for r in range(ROW_COUNT - 3):
         for c in range(COLUMN_COUNT - 3):
             window = [board[((ROW_COUNT-1) - r) - i][c + i]
                       for i in range(WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluate_window(window, xo)
 
     # Score Negetively Sloped Diagonals
     for r in range(ROW_COUNT - 3):
         for c in range(COLUMN_COUNT - 3):
             window = [board[(ROW_COUNT-1) - (3 + r) + i][c + i]
                       for i in range(WINDOW_LENGTH)]
-            score += evaluate_window(window, piece)
+            score += evaluate_window(window, xo)
     return score
 
 
 def is_terminal_node(board, xo):
-    return check_win(board, xo) or len(get_valid_locations(board) == 0)
+    return check_win(board, xo) or len(get_valid_locations(board)) == 0
 
 
-# def minimax(board, depth, maximizing_player, piece):
-#     valid_locations = get_valid_locations(board)
-#     is_terminal = is_terminal_node(board, piece)
-#     if depth == 0 or is_terminal_node:
-#         if is_terminal:
-#             if check_win(board, AI_PIECE):  # Edgecase: AI wins
-#                 return (None, 10000000000000000)
-#             elif check_win(board, PLAYER_PIECE):  # Edgecase: Player wins
-#                 return (None, -10000000000000000)
-#             else:  # Draw
-#                 return (None, 0)
-#         else:  # depth is zero
-#             return (None, score_position(board, AI_PIECE))
-#     if maximizing_player:
-#         value = - math.inf
-#         column = random.choice(valid_locations)
-#         for col in valid_locations:
-#             row = get_next_open_row(board, col)
-#             b_copy = [x[:] for x in board]
-#             drop_piece(b_copy, row, col, AI_PIECE)
-#             new_score = minimax(b_copy, depth - 1,  False)[1]  # Boolean switches player in the algorythum
-#             if new_score > value:
-#                 value = new_score
-#                 column = col
-#         return column, value
-#     else:  # Minimizing Player
-#         value = math.inf
-#         column = random.choice(valid_locations)
-#         for col in valid_locations:
-#             row = get_next_open_row(board, col)
-#             b_copy = [x[:] for x in board]
-#             drop_piece(b_copy, row, col, PLAYER_PIECE)
-#             new_score = minimax(b_copy, depth - 1,  True)[1]  # Boolean switches player in the algorythum
-#             if new_score < value:
-#                 value = new_score
-#                 column = col
-#         return column, value
+def minimax(board, depth, maximizing_player, xo):
+    """ The minimax algorithm and psuedocode can be found at
+    https://en.wikipedia.org/wiki/Minimax
+    This version is derived from Keith Galli, and modified for
+    this project where appropriate.
+    """
+
+    """
+    The minimax algorithm requires that the initial call has
+    maximizing_player set to True => the initial value for xo is
+    computor_xo
+    """
+    if xo == xo_X:
+        computer_xo = xo_X
+        player_xo = xo_O
+    else:
+        computer_xo = xo_O
+        player_xo = xo_X
+
+    valid_locations = get_valid_locations(board)
+    is_terminal = is_terminal_node(board, xo)
+    if depth == 0 or is_terminal:
+        if is_terminal:
+            if check_win(board, computer_xo):  # Edgecase: AI wins
+                return (None, 10000000000000000)
+            elif check_win(board, player_xo):  # Edgecase: Player wins
+                return (None, -10000000000000000)
+            else:  # Draw
+                return (None, 0)
+        else:  # depth is zero
+            return (None, score_position(board, computer_xo))
+    if maximizing_player:
+        value = - math.inf
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            b_copy = [x[:] for x in board]
+            drop_xo(b_copy, row, col, computer_xo)
+            new_score = minimax(b_copy, depth - 1,  False, computer_xo)[1]
+            if new_score > value:
+                value = new_score
+                column = col
+        return column, value
+    else:  # Minimizing Player
+        value = math.inf
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            b_copy = [x[:] for x in board]
+            drop_xo(b_copy, row, col, player_xo)
+            new_score = minimax(b_copy, depth - 1,  True, computer_xo)[1]
+            if new_score < value:
+                value = new_score
+                column = col
+        return column, value
 
 
 def is_valid_location(board, col):
@@ -152,7 +171,7 @@ def get_valid_locations(board):
     return valid_locations
 
 
-def pick_best_move(board, piece):
+def pick_best_move(board, xo):  # Static Method only
     """ Calculate the best column for next move """
     valid_locations = get_valid_locations(board)
     best_score = -10000
@@ -160,8 +179,8 @@ def pick_best_move(board, piece):
     for col in valid_locations:
         row = get_next_open_row(board, col)
         temp_board = [x[:] for x in board]
-        drop_piece(temp_board, row, col, piece)
-        score = score_position(temp_board, piece)
+        drop_xo(temp_board, row, col, xo)
+        score = score_position(temp_board, xo)
         if score > best_score:
             best_score = score
             best_col = col
@@ -180,11 +199,16 @@ def computer_move(board, columns, computer_xo, column_full):
     #         column_full.append(True)
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
-    col = pick_best_move(board, computer_xo)
-    # col, minimax_score = minimax(board, 3, True, piece)  # NB piece is bug arg
+    # col = pick_best_move(board, computer_xo)
+    col, minimax_score = minimax(board, 5, True, computer_xo)
+    if col is None:
+        game_over = True
+        return board, columns, column_full, game_over
+    else:
+        game_over = False
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
     if len(columns[col]) >= 6:
         column_full.append(True)
-    return board, columns, column_full
+    return board, columns, column_full, game_over
