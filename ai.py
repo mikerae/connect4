@@ -100,7 +100,7 @@ def is_terminal_node(board, xo):
     return check_win(board, xo) or len(get_valid_locations(board)) == 0
 
 
-def minimax(board, depth, maximizing_player, xo):
+def minimax(board, depth, alpha, beta, maximizing_player, xo):
     """ The minimax algorithm and psuedocode can be found at
     https://en.wikipedia.org/wiki/Minimax
     This version is derived from Keith Galli, and modified for
@@ -138,10 +138,14 @@ def minimax(board, depth, maximizing_player, xo):
             row = get_next_open_row(board, col)
             b_copy = [x[:] for x in board]
             drop_xo(b_copy, row, col, computer_xo)
-            new_score = minimax(b_copy, depth - 1,  False, computer_xo)[1]
+            new_score = minimax(b_copy, depth - 1, alpha, beta,
+                                False, computer_xo)[1]
             if new_score > value:
                 value = new_score
                 column = col
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
         return column, value
     else:  # Minimizing Player
         value = math.inf
@@ -150,10 +154,14 @@ def minimax(board, depth, maximizing_player, xo):
             row = get_next_open_row(board, col)
             b_copy = [x[:] for x in board]
             drop_xo(b_copy, row, col, player_xo)
-            new_score = minimax(b_copy, depth - 1,  True, computer_xo)[1]
+            new_score = minimax(b_copy, depth - 1, alpha, beta,
+                                True, computer_xo)[1]
             if new_score < value:
                 value = new_score
                 column = col
+            beta = min(beta, value)
+            if alpha >= beta:
+                break
         return column, value
 
 
@@ -200,7 +208,9 @@ def computer_move(board, columns, computer_xo, column_full):
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
     # col = pick_best_move(board, computer_xo)
-    col, minimax_score = minimax(board, 4, True, computer_xo)
+    minimax_tuple = minimax(board, 6, -math.inf, math.inf,
+                            True, computer_xo)
+    col = minimax_tuple[0]
     if col is None:
         game_over = True
         return board, columns, column_full, game_over
