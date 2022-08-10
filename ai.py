@@ -123,7 +123,7 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
     is_terminal = is_terminal_node(board, xo)
     if depth == 0 or is_terminal:
         if is_terminal:
-            if check_win(board, computer_xo):  # Edgecase: AI wins
+            if check_win(board, computer_xo):  # Edgecase: Computor wins
                 return (None, 10000000000000000)
             elif check_win(board, player_xo):  # Edgecase: Player wins
                 return (None, -10000000000000000)
@@ -181,7 +181,7 @@ def get_valid_locations(board):
 
 def computer_move(board, columns, computer_xo, column_full):
     """ Computor AI """
-    minimax_tuple = minimax(board, 6, -math.inf, math.inf,
+    minimax_tuple = minimax(board, 5, -math.inf, math.inf,
                             True, computer_xo)
     col = minimax_tuple[0]
     if col is None:
