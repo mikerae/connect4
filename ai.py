@@ -43,13 +43,22 @@ def evaluate_window(window, piece):
         score += 5
 
     if window.count(opp_piece) == 3 and window.count(EMPTY) == 1:
-        score -= 8
+        score -= 80
     return score
 
 
 def score_position(board, piece):
     """ Calculates board Static Scoring Method """
     score = 0
+
+    # Score Centre Column
+    center_array = []
+    for row in board:
+        cell = row[COLUMN_COUNT//2]
+        center_array.append(cell)
+    center_count = center_array.count(piece)
+    score += center_count * 6
+
     # Score Horizontal
     for r in range(ROW_COUNT):
         row_array = board[(ROW_COUNT-1) - r]
@@ -101,7 +110,7 @@ def get_valid_locations(board):
 def pick_best_move(board, piece):
     """ Calculate the best column for next move """
     valid_locations = get_valid_locations(board)
-    best_score = 0
+    best_score = -10000
     best_col = random.choice(valid_locations)
     for col in valid_locations:
         row = get_next_open_row(board, col)
