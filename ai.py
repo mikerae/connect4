@@ -179,35 +179,8 @@ def get_valid_locations(board):
     return valid_locations
 
 
-# def pick_best_move(board, xo):  # Static Method only
-#     """ Calculate the best column for next move """
-#     valid_locations = get_valid_locations(board)
-#     best_score = -10000
-#     best_col = random.choice(valid_locations)
-#     for col in valid_locations:
-#         row = get_next_open_row(board, col)
-#         temp_board = [x[:] for x in board]
-#         drop_xo(temp_board, row, col, xo)
-#         score = score_position(temp_board, xo)
-#         if score > best_score:
-#             best_score = score
-#             best_col = col
-#     return best_col
-
-
 def computer_move(board, columns, computer_xo, column_full):
     """ Computor AI """
-    # """ Computer makes a random move """
-    # col = random.randint(0, 6)
-    # if len(columns[col]) < 6:
-    #     columns[col].push(computer_xo)
-    #     board[6 - len(columns[col])][col] = \
-    #         columns[col].peek()
-    #     if len(columns[col]) >= 6:
-    #         column_full.append(True)
-    # else:
-    #     computer_move(board, columns, computer_xo, column_full)
-    # col = pick_best_move(board, computer_xo)
     minimax_tuple = minimax(board, 6, -math.inf, math.inf,
                             True, computer_xo)
     col = minimax_tuple[0]
