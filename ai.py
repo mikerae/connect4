@@ -41,12 +41,12 @@ def evaluate_window(window, xo):
     if window.count(xo) == 4:
         score += 100
     elif window.count(xo) == 3 and window.count(EMPTY) == 1:
-        score += 10
-    elif window.count(xo) == 2 and window.count(EMPTY == 2):
         score += 5
+    elif window.count(xo) == 2 and window.count(EMPTY == 2):
+        score += 2
 
     if window.count(opp_xo) == 3 and window.count(EMPTY) == 1:
-        score -= 80
+        score -= 4
     return score
 
 
@@ -60,7 +60,7 @@ def score_position(board, xo):
         cell = row[COLUMN_COUNT//2]
         center_array.append(cell)
     center_count = center_array.count(xo)
-    score += center_count * 6
+    score += center_count * 3
 
     # Score Horizontal
     for r in range(ROW_COUNT):
@@ -171,20 +171,20 @@ def get_valid_locations(board):
     return valid_locations
 
 
-def pick_best_move(board, xo):  # Static Method only
-    """ Calculate the best column for next move """
-    valid_locations = get_valid_locations(board)
-    best_score = -10000
-    best_col = random.choice(valid_locations)
-    for col in valid_locations:
-        row = get_next_open_row(board, col)
-        temp_board = [x[:] for x in board]
-        drop_xo(temp_board, row, col, xo)
-        score = score_position(temp_board, xo)
-        if score > best_score:
-            best_score = score
-            best_col = col
-    return best_col
+# def pick_best_move(board, xo):  # Static Method only
+#     """ Calculate the best column for next move """
+#     valid_locations = get_valid_locations(board)
+#     best_score = -10000
+#     best_col = random.choice(valid_locations)
+#     for col in valid_locations:
+#         row = get_next_open_row(board, col)
+#         temp_board = [x[:] for x in board]
+#         drop_xo(temp_board, row, col, xo)
+#         score = score_position(temp_board, xo)
+#         if score > best_score:
+#             best_score = score
+#             best_col = col
+#     return best_col
 
 
 def computer_move(board, columns, computer_xo, column_full):
@@ -200,7 +200,7 @@ def computer_move(board, columns, computer_xo, column_full):
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
     # col = pick_best_move(board, computer_xo)
-    col, minimax_score = minimax(board, 5, True, computer_xo)
+    col, minimax_score = minimax(board, 4, True, computer_xo)
     if col is None:
         game_over = True
         return board, columns, column_full, game_over
