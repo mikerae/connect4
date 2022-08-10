@@ -5,6 +5,7 @@ See Readme
 """
 import random
 from colorama import Fore
+from game import check_win
 
 ROW_COUNT = 6
 COLUMN_COUNT = 7
@@ -91,6 +92,15 @@ def score_position(board, piece):
                       for i in range(WINDOW_LENGTH)]
             score += evaluate_window(window, piece)
     return score
+
+
+def is_terminal_node(board, xo):
+    return check_win(board, xo) or len(get_valid_locations(board) >= 7)
+
+
+def minimax(board, depth, maximizing_player):
+    pass
+    # if depth == 0 or terminal_node:
 
 
 def is_valid_location(board, col):

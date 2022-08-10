@@ -105,14 +105,18 @@ def main():
             # Player Move
             board, columns, column_full =\
                 player_move(board, columns, player_xo, column_full)
-            win, winner = check_win(board, player_xo, turn)
+            win = check_win(board, player_xo)
+            if win:
+                winner = turn
             draw = check_draw(column_full)
             game.moves += 1
         else:
             # Computer Move
             board, columns, column_full =\
                 ai.computer_move(board, columns, computer_xo, column_full)
-            win, winner = check_win(board, computer_xo, turn)
+            win = check_win(board, computer_xo)
+            if win:
+                winner = turn
             draw = check_draw(column_full)
         turn += 1
         turn = turn % 2

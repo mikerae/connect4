@@ -175,7 +175,7 @@ def player_move(board, columns, player_xo, column_full):
     return board, columns, column_full
 
 
-def check_win(board, xo, turn):
+def check_win(board, xo):
     """ Check if win conditions are met """
     result = False
     # Horizonatal check
@@ -206,7 +206,7 @@ def check_win(board, xo, turn):
                     board[5 - (row + 3)][col] == xo:
                 result = True
                 break
-    return result, turn
+    return result
 
 
 def check_draw(column_full):
