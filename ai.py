@@ -4,6 +4,7 @@ AI code derived from Keith Galli: How to Program a Connect 4 AI
 See Readme
 """
 import random
+import math
 from colorama import Fore
 from game import check_win
 
@@ -95,12 +96,46 @@ def score_position(board, piece):
 
 
 def is_terminal_node(board, xo):
-    return check_win(board, xo) or len(get_valid_locations(board) >= 7)
+    return check_win(board, xo) or len(get_valid_locations(board) == 0)
 
 
-def minimax(board, depth, maximizing_player):
-    pass
-    # if depth == 0 or terminal_node:
+# def minimax(board, depth, maximizing_player, piece):
+#     valid_locations = get_valid_locations(board)
+#     is_terminal = is_terminal_node(board, piece)
+#     if depth == 0 or is_terminal_node:
+#         if is_terminal:
+#             if check_win(board, AI_PIECE):  # Edgecase: AI wins
+#                 return (None, 10000000000000000)
+#             elif check_win(board, PLAYER_PIECE):  # Edgecase: Player wins
+#                 return (None, -10000000000000000)
+#             else:  # Draw
+#                 return (None, 0)
+#         else:  # depth is zero
+#             return (None, score_position(board, AI_PIECE))
+#     if maximizing_player:
+#         value = - math.inf
+#         column = random.choice(valid_locations)
+#         for col in valid_locations:
+#             row = get_next_open_row(board, col)
+#             b_copy = [x[:] for x in board]
+#             drop_piece(b_copy, row, col, AI_PIECE)
+#             new_score = minimax(b_copy, depth - 1,  False)[1]  # Boolean switches player in the algorythum
+#             if new_score > value:
+#                 value = new_score
+#                 column = col
+#         return column, value
+#     else:  # Minimizing Player
+#         value = math.inf
+#         column = random.choice(valid_locations)
+#         for col in valid_locations:
+#             row = get_next_open_row(board, col)
+#             b_copy = [x[:] for x in board]
+#             drop_piece(b_copy, row, col, PLAYER_PIECE)
+#             new_score = minimax(b_copy, depth - 1,  True)[1]  # Boolean switches player in the algorythum
+#             if new_score < value:
+#                 value = new_score
+#                 column = col
+#         return column, value
 
 
 def is_valid_location(board, col):
@@ -146,6 +181,7 @@ def computer_move(board, columns, computer_xo, column_full):
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
     col = pick_best_move(board, computer_xo)
+    # col, minimax_score = minimax(board, 3, True, piece)  # NB piece is bug arg
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
