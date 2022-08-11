@@ -50,6 +50,23 @@ def evaluate_window(window, xo):
     return score
 
 
+def pick_best_move(board, xo):  # heuristic value of node
+    """ Calculate the best column for next move
+    assuming depth is zero for minimax() """
+    valid_locations = get_valid_locations(board)
+    best_score = -10000
+    best_col = random.choice(valid_locations)
+    for col in valid_locations:
+        row = get_next_open_row(board, col)
+        temp_board = [x[:] for x in board]
+        drop_xo(temp_board, row, col, xo)
+        score = score_position(temp_board, xo)
+        if score > best_score:
+            best_score = score
+            best_col = col
+    return best_col
+
+
 def score_position(board, xo):
     """ Calculates board Static Scoring Method """
     score = 0
@@ -130,7 +147,8 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
             else:  # Draw
                 return (None, 0)
         else:  # depth is zero
-            return (None, score_position(board, computer_xo))
+            best_move = pick_best_move(board, xo)
+            return (best_move, score_position(board, computer_xo))
     if maximizing_player:
         value = - math.inf
         column = random.choice(valid_locations)
@@ -181,7 +199,7 @@ def get_valid_locations(board):
 
 def computer_move(board, columns, computer_xo, column_full):
     """ Computor AI """
-    minimax_tuple = minimax(board, 5, -math.inf, math.inf,
+    minimax_tuple = minimax(board, 0, -math.inf, math.inf,
                             True, computer_xo)
     col = minimax_tuple[0]
     if col is None:
