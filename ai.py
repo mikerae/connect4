@@ -126,11 +126,10 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
     this project where appropriate.
     """
 
-    """
-    The minimax algorithm requires that the initial call has
+    """ The minimax algorithm requires that the initial call has
     maximizing_player set to True => the initial value for xo is
-    computor_xo
-    """
+    computor_xo """
+
     if xo == xo_X:
         computer_xo = xo_X
         player_xo = xo_O
@@ -203,8 +202,20 @@ def get_valid_locations(board):
 
 def computer_move(board, columns, computer_xo, column_full):
     """ Computor AI """
+
+    # """ Computer makes a random move """
+    # col = random.randint(0, 6)
+    # if len(columns[col]) < 6:
+    #     columns[col].push(computer_xo)
+    #     board[6 - len(columns[col])][col] = \
+    #         columns[col].peek()
+    #     if len(columns[col]) >= 6:
+    #         column_full.append(True)
+    # else:
+    #     computer_move(board, columns, computer_xo, column_full)
+
     minimax_tuple = minimax(board, 0, -math.inf, math.inf,
-                            True, computer_xo)
+    True, computer_xo)
     col = minimax_tuple[0]
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \

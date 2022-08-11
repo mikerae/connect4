@@ -206,7 +206,7 @@ def check_win(board, xo):
                     board[5 - (row + 3)][col] == xo:
                 result = (col, True)
                 break
-    return (col, result)
+    return col, result
 
 
 def check_draw(column_full):
@@ -214,4 +214,4 @@ def check_draw(column_full):
     draw = False
     if len(column_full) >= 7:
         draw = True
-    return (None, draw)
+    return draw

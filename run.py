@@ -101,7 +101,7 @@ def main():
     game.welcome()
 
     # Main game loop
-    while not win:
+    while True:
         if turn == PLAYER:
             # Player Move
             board, columns, column_full =\
@@ -116,12 +116,12 @@ def main():
             # Computer Move
             board, columns, column_full =\
                 ai.computer_move(board, columns, computer_xo, column_full)
-            check_win_tuple = check_win(board, player_xo)
+            check_win_tuple = check_win(board, computer_xo)
             win = check_win_tuple[WIN]
-            check_draw_tuple = check_draw(column_full)
-            draw = check_draw_tuple[WIN]
+            draw = check_draw(column_full)
             if win:
                 winner = turn
+                break
             elif draw:
                 break
 
