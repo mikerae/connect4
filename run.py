@@ -22,6 +22,7 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("connect4")
+WIN = 1
 
 init()  # initiates colorama
 
@@ -105,22 +106,24 @@ def main():
             # Player Move
             board, columns, column_full =\
                 player_move(board, columns, player_xo, column_full)
-            win = check_win(board, player_xo)
+            check_win_tuple = check_win(board, player_xo)
+            win = check_win_tuple[WIN]
             if win:
                 winner = turn
             draw = check_draw(column_full)
             game.moves += 1
         else:
             # Computer Move
-            board, columns, column_full, game_over =\
+            board, columns, column_full =\
                 ai.computer_move(board, columns, computer_xo, column_full)
-            if game_over:
-                if check_draw(column_full):
-                    draw = True
-                    break
-                elif check_win(board, computer_xo):
-                    win = True
-                    winner = turn
+            check_win_tuple = check_win(board, player_xo)
+            win = check_win_tuple[WIN]
+            check_draw_tuple = check_draw(column_full)
+            draw = check_draw_tuple[WIN]
+            if win:
+                winner = turn
+            elif draw:
+                break
 
         turn += 1
         turn = turn % 2

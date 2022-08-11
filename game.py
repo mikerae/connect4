@@ -183,7 +183,7 @@ def check_win(board, xo):
         for col in range(4):
             if board[5 - row][col] == board[5 - row][col + 1] ==\
                     board[5 - row][col + 2] == board[5 - row][col + 3] == xo:
-                result = True
+                result = (col, True)
                 break
     # Verticle check
     for col in range(7):
@@ -191,7 +191,7 @@ def check_win(board, xo):
             if board[5 - row][col] == board[5 - (row + 1)][col] ==\
                     board[5 - (row + 2)][col] ==\
                     board[5 - (row + 3)][col] == xo:
-                result = True
+                result = (col, True)
                 break
     # +ve slope Diagonal or -ve slope Diagonal check
     for row in range(6):
@@ -204,9 +204,9 @@ def check_win(board, xo):
                     board[5 - (row + 1)][col + 2] ==\
                     board[5 - (row + 2)][col + 1] ==\
                     board[5 - (row + 3)][col] == xo:
-                result = True
+                result = (col, True)
                 break
-    return result
+    return (col, result)
 
 
 def check_draw(column_full):
@@ -214,4 +214,4 @@ def check_draw(column_full):
     draw = False
     if len(column_full) >= 7:
         draw = True
-    return draw
+    return (None, draw)

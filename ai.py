@@ -14,6 +14,7 @@ WINDOW_LENGTH = 4
 EMPTY = "-"
 xo_X = Fore.RED + "X" + Fore.WHITE
 xo_O = Fore.YELLOW + "O" + Fore.WHITE
+WIN = 1
 
 
 def get_next_open_row(board, col):
@@ -114,7 +115,8 @@ def score_position(board, xo):
 
 
 def is_terminal_node(board, xo):
-    return check_win(board, xo) or len(get_valid_locations(board)) == 0
+    check_win_tuple = check_win(board, xo)
+    return check_win_tuple[WIN] or len(get_valid_locations(board)) == 0
 
 
 def minimax(board, depth, alpha, beta, maximizing_player, xo):
@@ -138,11 +140,13 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
 
     valid_locations = get_valid_locations(board)
     is_terminal = is_terminal_node(board, xo)
+    check_win_comp = check_win(board, computer_xo)
+    check_win_ply = check_win(board, player_xo)
     if depth == 0 or is_terminal:
         if is_terminal:
-            if check_win(board, computer_xo):  # Edgecase: Computor wins
+            if check_win_comp[WIN]:  # Edgecase: Computor wins
                 return (None, 10000000000000000)
-            elif check_win(board, player_xo):  # Edgecase: Player wins
+            elif check_win_ply[WIN]:  # Edgecase: Player wins
                 return (None, -10000000000000000)
             else:  # Draw
                 return (None, 0)
@@ -202,14 +206,9 @@ def computer_move(board, columns, computer_xo, column_full):
     minimax_tuple = minimax(board, 0, -math.inf, math.inf,
                             True, computer_xo)
     col = minimax_tuple[0]
-    if col is None:
-        game_over = True
-        return board, columns, column_full, game_over
-    else:
-        game_over = False
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
     if len(columns[col]) >= 6:
         column_full.append(True)
-    return board, columns, column_full, game_over
+    return board, columns, column_full
