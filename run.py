@@ -101,17 +101,19 @@ def main():
     game.welcome()
 
     # Main game loop
-    while True:
+    while not win:
         if turn == PLAYER:
             # Player Move
             board, columns, column_full =\
                 player_move(board, columns, player_xo, column_full)
             check_win_tuple = check_win(board, player_xo)
             win = check_win_tuple[WIN]
-            if win:
-                winner = turn
             draw = check_draw(column_full)
             game.moves += 1
+            if win:
+                winner = turn
+            elif draw:
+                break
         else:
             # Computer Move
             board, columns, column_full =\
@@ -121,7 +123,6 @@ def main():
             draw = check_draw(column_full)
             if win:
                 winner = turn
-                break
             elif draw:
                 break
 

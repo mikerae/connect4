@@ -215,7 +215,7 @@ def computer_move(board, columns, computer_xo, column_full):
     #     computer_move(board, columns, computer_xo, column_full)
 
     minimax_tuple = minimax(board, 0, -math.inf, math.inf,
-    True, computer_xo)
+                            True, computer_xo)
     col = minimax_tuple[0]
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
