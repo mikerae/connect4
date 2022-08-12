@@ -178,13 +178,15 @@ def player_move(board, columns, player_xo, column_full):
 def check_win(board, xo):
     """ Returns column and win condition """
     win = False
-    # # Horizonatal check
-    # for row in range(6):
-    #     for col in range(4):
-    #         if board[5 - row][col] == board[5 - row][col + 1] ==\
-    #                 board[5 - row][col + 2] == board[5 - row][col + 3] == xo:
-    #             wn = True
-    #             break
+    col = 0
+    # Horizonatal check
+    for row in range(6):
+        for col in range(4):
+            if board[5 - row][col] == board[5 - row][col + 1] ==\
+                    board[5 - row][col + 2] == board[5 - row][col + 3] == xo:
+                win = True
+                break
+
     # Verticle check
     for col in range(7):
         for row in range(4):
@@ -193,19 +195,27 @@ def check_win(board, xo):
                     board[5 - (row + 3)][col] == xo:
                 win = True
                 break
-    # # +ve slope Diagonal or -ve slope Diagonal check
-    # for row in range(6):
-    #     for col in range(4):
-    #         if board[5 - row][col] ==\
-    #                 board[5 - (row + 1)][col + 1] ==\
-    #                 board[5 - (row + 2)][col + 2] ==\
-    #                 board[5 - (row + 3)][col + 3] == xo or\
-    #                 board[5 - row][col + 3] ==\
-    #                 board[5 - (row + 1)][col + 2] ==\
-    #                 board[5 - (row + 2)][col + 1] ==\
-    #                 board[5 - (row + 3)][col] == xo:
-    #             win = True
-    #             break
+
+    # +ve slope Diagonal check
+    for row in range(6):
+        for col in range(4):
+            if board[5 - row][col] ==\
+                    board[5 - (row + 1)][col + 1] ==\
+                    board[5 - (row + 2)][col + 2] ==\
+                    board[5 - (row + 3)][col + 3] == xo:
+                win = True
+                break
+
+    # -ve slope Diagonal check
+    for row in range(6):
+        for col in range(4):
+            if board[5 - row][col + 3] ==\
+                board[5 - (row + 1)][col + 2] ==\
+                board[5 - (row + 2)][col + 1] ==\
+                    board[5 - (row + 3)][col] == xo:
+                win = True
+                break
+
     return col, win
 
 

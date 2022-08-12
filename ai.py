@@ -122,7 +122,7 @@ def is_terminal_node(board, xo):
 
 def minimax(board, depth, alpha, beta, maximizing_player, xo):
     """ returns best column and the score for the board for this
-    column """
+    column using minimax algorithum with alpha beta pruning"""
 
     # The minimax algorithm requires that the initial call has
     # maximizing_player set to True => the initial value for xo is
@@ -136,14 +136,14 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
 
     valid_locations = get_valid_locations(board)
     is_terminal = is_terminal_node(board, xo)
-    win_comp = check_win(board, computer_xo)[1]
-    win_ply = check_win(board, player_xo)[1]
+    # win_comp = check_win(board, computer_xo)[1]
+    # win_ply = check_win(board, player_xo)[1]
     if depth == 0 or is_terminal:
         if is_terminal:
-            if win_comp:  # Edgecase: Computor wins
+            if check_win(board, computer_xo)[1]:  # Edgecase: Computor wins
                 # col = check_win_comp[COL]
                 return (None, 10000000000000000)
-            elif win_ply:  # Edgecase: Player wins
+            elif check_win(board, player_xo)[1]:  # Edgecase: Player wins
                 # col = check_win_ply[COL]
                 return (None, -10000000000000000)
             else:  # Draw
@@ -203,23 +203,10 @@ def get_valid_locations(board):
 
 
 def computer_move(board, columns, computer_xo, column_full):
-    """ Computor AI """
+    """ calls AI, writes computer move to stack and board """
 
-    # """ Computer makes a random move """
-    # col = random.randint(0, 6)
-    # if len(columns[col]) < 6:
-    #     columns[col].push(computer_xo)
-    #     board[6 - len(columns[col])][col] = \
-    #         columns[col].peek()
-    #     if len(columns[col]) >= 6:
-    #         column_full.append(True)
-    # else:
-    #     computer_move(board, columns, computer_xo, column_full)
-
-    col = pick_best_move(board, computer_xo)
-    # minimax_tuple = minimax(board, 1, -math.inf, math.inf,
-    #                         True, computer_xo)
-    # col = minimax_tuple[0]
+    col = minimax(board, 1, -math.inf, math.inf,
+                  True, computer_xo)[0]
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
