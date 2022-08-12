@@ -118,8 +118,7 @@ def main():
             # Computer Move
             board, columns, column_full =\
                 ai.computer_move(board, columns, computer_xo, column_full)
-            check_win_tuple = check_win(board, computer_xo)
-            win = check_win_tuple[WIN]
+            win = check_win(board, computer_xo)[1]
             draw = check_draw(column_full)
             if win:
                 winner = turn

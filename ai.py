@@ -1,7 +1,7 @@
 """
 AI code derived from Keith Galli: How to Program a Connect 4 AI
 (https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6)
-See Readme
+and adapted as approriate. See Readme
 """
 import random
 import math
@@ -15,6 +15,7 @@ EMPTY = "-"
 xo_X = Fore.RED + "X" + Fore.WHITE
 xo_O = Fore.YELLOW + "O" + Fore.WHITE
 WIN = 1
+COL = 0
 
 
 def get_next_open_row(board, col):
@@ -120,16 +121,12 @@ def is_terminal_node(board, xo):
 
 
 def minimax(board, depth, alpha, beta, maximizing_player, xo):
-    """ The minimax algorithm and psuedocode can be found at
-    https://en.wikipedia.org/wiki/Minimax
-    This version is derived from Keith Galli, and modified for
-    this project where appropriate.
-    """
+    """ returns best column and the score for the board for this
+    column """
 
-    """ The minimax algorithm requires that the initial call has
-    maximizing_player set to True => the initial value for xo is
-    computor_xo """
-
+    # The minimax algorithm requires that the initial call has
+    # maximizing_player set to True => the initial value for xo is
+    # computor_xo
     if xo == xo_X:
         computer_xo = xo_X
         player_xo = xo_O
@@ -139,19 +136,24 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
 
     valid_locations = get_valid_locations(board)
     is_terminal = is_terminal_node(board, xo)
-    check_win_comp = check_win(board, computer_xo)
-    check_win_ply = check_win(board, player_xo)
+    win_comp = check_win(board, computer_xo)[1]
+    win_ply = check_win(board, player_xo)[1]
     if depth == 0 or is_terminal:
         if is_terminal:
-            if check_win_comp[WIN]:  # Edgecase: Computor wins
+            if win_comp:  # Edgecase: Computor wins
+                # col = check_win_comp[COL]
                 return (None, 10000000000000000)
-            elif check_win_ply[WIN]:  # Edgecase: Player wins
+            elif win_ply:  # Edgecase: Player wins
+                # col = check_win_ply[COL]
                 return (None, -10000000000000000)
             else:  # Draw
+                # draw_move = pick_best_move(board, xo)
                 return (None, 0)
         else:  # depth is zero
-            best_move = pick_best_move(board, xo)
-            return (best_move, score_position(board, computer_xo))
+            # best_move = pick_best_move(board, xo)
+            # score = score_position(board, computer_xo)
+            return (None, score_position(board, computer_xo))
+
     if maximizing_player:
         value = - math.inf
         column = random.choice(valid_locations)
@@ -214,7 +216,7 @@ def computer_move(board, columns, computer_xo, column_full):
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
 
-    minimax_tuple = minimax(board, 0, -math.inf, math.inf,
+    minimax_tuple = minimax(board, 1, -math.inf, math.inf,
                             True, computer_xo)
     col = minimax_tuple[0]
     columns[col].push(computer_xo)
