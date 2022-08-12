@@ -99,6 +99,7 @@ def main():
 
     game = Game(board, name, player_xo)
     game.welcome()
+    display_board(board)
 
     # Main game loop
     while not win:
