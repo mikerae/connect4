@@ -122,36 +122,29 @@ def is_terminal_node(board, xo):
 
 def minimax(board, depth, alpha, beta, maximizing_player, xo):
     """ returns best column and the score for the board for this
-    column using minimax algorithum with alpha beta pruning"""
+    column using minimax algorithm with alpha beta pruning"""
 
     # The minimax algorithm requires that the initial call has
     # maximizing_player set to True => the initial value for xo is
     # computor_xo
-    if xo == xo_X:
+    if xo == xo_X:     # Sets computor_xo
         computer_xo = xo_X
         player_xo = xo_O
-    else:
+    else:     # Sets computor_xo
         computer_xo = xo_O
         player_xo = xo_X
 
     valid_locations = get_valid_locations(board)
     is_terminal = is_terminal_node(board, xo)
-    # win_comp = check_win(board, computer_xo)[1]
-    # win_ply = check_win(board, player_xo)[1]
     if depth == 0 or is_terminal:
         if is_terminal:
             if check_win(board, computer_xo)[1]:  # Edgecase: Computor wins
-                # col = check_win_comp[COL]
                 return (None, 10000000000000000)
             elif check_win(board, player_xo)[1]:  # Edgecase: Player wins
-                # col = check_win_ply[COL]
                 return (None, -10000000000000000)
             else:  # Draw
-                # draw_move = pick_best_move(board, xo)
                 return (None, 0)
         else:  # depth is zero
-            # best_move = pick_best_move(board, xo)
-            # score = score_position(board, computer_xo)
             return (None, score_position(board, computer_xo))
 
     if maximizing_player:
@@ -178,7 +171,7 @@ def minimax(board, depth, alpha, beta, maximizing_player, xo):
             b_copy = [x[:] for x in board]
             drop_xo(b_copy, row, col, player_xo)
             new_score = minimax(b_copy, depth - 1, alpha, beta,
-                                True, computer_xo)[1]
+                                True, player_xo)[1]
             if new_score < value:
                 value = new_score
                 column = col
@@ -205,7 +198,7 @@ def get_valid_locations(board):
 def computer_move(board, columns, computer_xo, column_full):
     """ calls AI, writes computer move to stack and board """
 
-    col = minimax(board, 1, -math.inf, math.inf,
+    col = minimax(board, 5, -math.inf, math.inf,
                   True, computer_xo)[0]
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
