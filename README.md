@@ -81,6 +81,40 @@ There were other differences.
 ### Persistent Data
 Data about each game is stored in worksheets in the cloud. The program writes game data to the remote googlesheets worksheet. It provides the user with a list of games played, and the facility to read game data for a chosen game.
 The API gspread was used to access the spreadsheet and worksheets on goolge drive.
+The code to link the project to the external google worksheets was copied from the Code Institue 'Love Sandwiches' walkthrough.
 ### Game Data: Game Class
 A class Game() is used to create and store data about each game. The class has methods facilitating the reading, writing and file management of stored game data. 
 
+## Bugs and Fixes (sample)
+checkwin() for computer is not working properly	
+if player goes second, the computer does not show move on the board…
+	check_win outputs a tuple().
+	check_win[1] outputs win=True/False 
+
+	check_win outputs False if not win
+	check_win outputs tuple (column, True) if True:
+		Fix: within if statements, boolean was assigned  tuple (col, Boolean)
+			return’ renamed to ‘win’
+			win only assigned Boolean
+			check_win() only returns tuple (col, win)
+
+when minimax:
+	check_win with computer first gives false +ve win @ 3 in a row
+	empty columns, some full columns
+		horizontal, vertical, +ve dia, -ve día
+			player first, computer first
+				player vertical , computer vertical
+				
+	errors:
+	computer first: -dia: does not return true
+		fix: 5 conditionals instead of 4: removed wrong one
+
+Minimax terminal node bugs
+	confirmed that with depth not zero, column is output with score
+	therefore providing a column value if terminal is not right. removed code and reverted to Neil Galli code
+Minimax: Match maximizing_player with approptiate piece i.e.
+- True: computer_xo
+- False: player_ox
+
+## Deployment
+The projects was writen using the GitPod Ide, with pre
