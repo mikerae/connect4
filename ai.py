@@ -116,8 +116,8 @@ def score_position(board, xo):
 
 
 def is_terminal_node(board, xo):
-    check_win_tuple = check_win(board, xo)
-    return check_win_tuple[WIN] or len(get_valid_locations(board)) == 0
+    win = check_win(board, xo)[1]
+    return win or len(get_valid_locations(board)) == 0
 
 
 def minimax(board, depth, alpha, beta, maximizing_player, xo):
@@ -216,9 +216,10 @@ def computer_move(board, columns, computer_xo, column_full):
     # else:
     #     computer_move(board, columns, computer_xo, column_full)
 
-    minimax_tuple = minimax(board, 1, -math.inf, math.inf,
-                            True, computer_xo)
-    col = minimax_tuple[0]
+    col = pick_best_move(board, computer_xo)
+    # minimax_tuple = minimax(board, 1, -math.inf, math.inf,
+    #                         True, computer_xo)
+    # col = minimax_tuple[0]
     columns[col].push(computer_xo)
     board[6 - len(columns[col])][col] = \
         columns[col].peek()
