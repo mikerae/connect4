@@ -35,16 +35,7 @@ Since this is a terminal based project, it was decided to follow the work of Osc
 - https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
 
 Oscar has very concise code for basic game play and his structure was followed closely.
-#### Data Model
-Oscar used Stacks to store column choices, and to easily retrieve this information.
-He used a list of lists to model the 6 * 7 board, where each row was a list of 7 'spaces' for string representations of 'X' and 'O' to be stored.
-This data structure was used.
-However, Keith Galli (see below) used a different data structure.
-Keith chose to use a Numpy Array to to represent the board, and the pieces were integers 1 and 2, whilst spaces were 0.
-This difference in data strucures caused many issues in development.
-As develpment progressed, Keith's work was followed in preference to Oscars, but significant portions of Keiths code needed to be modified to accomodate my choice of data structurs.
-The single most significant issue was the diference in indexing between a Numpy Array and a native python list of lists.
-There were other differences.
+
 ### Development Stage 2 : Game data stored in the cloud
 Should the player, or a third party wish to evaluate game performance, data for each game is stored in the cloud, and is reviewable through the terminal program.
 ### Developmet Stage 3: Screen Colour
@@ -70,4 +61,26 @@ Pseudocode:
 More info about the Minimax Algorithm, and Alpha Beta Pruning can be found here:
 - https://en.wikipedia.org/wiki/MinimaxWhilst 
 - https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+
+## Structure: Flow Chart
+![flow chart](/assets/images/connect4-flow-chart.png)
+
+## Data Structures
+### Stacks
+Oscar Nieves, in his article ‘Programming a Connect-4 game on Python’ https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf  recommends the  Stack Data Structure for holding the content of each column. A stack is a simplified list, where the last data to be added is the first to be removed. Oscar Nieves create a class Stack with methods to return the length of the stack object, to add data to the object and to read the last data in the stack. This code is copied with accreditation into a separate python file and imported as a library 
+into the project code.
+### List of Lists
+He used a list of lists to model the 6 * 7 board, where each row was a list of 7 'spaces' for string representations of 'X' and 'O' to be stored.
+This data structure was used.
+However, Keith Galli (see below) used a different data structure.
+Keith chose to use a Numpy Array to to represent the board, and the pieces were integers 1 and 2, whilst spaces were 0.
+This difference in data strucures caused many issues in development.
+As develpment progressed, Keith's work was followed in preference to Oscars, but significant portions of Keiths code needed to be modified to accomodate my choice of data structurs.
+The single most significant issue was the diference in indexing between a Numpy Array and a native python list of lists.
+There were other differences.
+### Persistent Data
+Data about each game is stored in worksheets in the cloud. The program writes game data to the remote googlesheets worksheet. It provides the user with a list of games played, and the facility to read game data for a chosen game.
+The API gspread was used to access the spreadsheet and worksheets on goolge drive.
+### Game Data: Game Class
+A class Game() is used to create and store data about each game. The class has methods facilitating the reading, writing and file management of stored game data. 
 
