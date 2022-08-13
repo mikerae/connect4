@@ -61,6 +61,7 @@ The colorama library can be found at https://pypi.org/project/colorama/
 
 #### AI Requirements:
 Whilst any form of AI other than the simplest random computer moves is beyond the scope of this project, such AI code is readily available to be used, with appropriate accreditation. Keith Galli explains the AI needed in his youtube video ‘How does a Board Game AI Work? (Connect 4, Othello, Chess, Checkers) - Minimax Algorithm Explained’ 
+https://www.youtube.com/watch?v=y7AKtWGOPAE&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=5
 Such AI needs the following:
 - A scoring heuristic: A way for the computer to evaluate the ‘static state’ of the board at any given point in the game. Keith Galli’s scoring method counts the number of pieces (either 'X' or 'O') in a 4 space window in the board (horizontally, vertically and diagonally):
     - Number of MaximizingPlayer pieces in the Centre Column (prefer centre column)
@@ -164,7 +165,7 @@ This data structure was used.
 However, Keith Galli (see below) used a different data structure.
 Keith chose to use a Numpy Array to to represent the board, and the pieces were integers 1 and 2, whilst spaces were 0.
 This difference in data structures caused many issues in development.
-As development progressed, Keith's work was followed in preference to Oscars', but significant portions of Keiths code needed to be modified to accommodate my choice of data structure.
+As development progressed, Keith's work was followed in preference to Oscars', but significant portions of Keith's code needed to be modified to accommodate my choice of data structure.
 The single most significant issue was the difference in indexing between a Numpy Array and a native python list of lists.
 #### Game Data: Game() Class
 [Back to Top](#contents)
@@ -253,9 +254,9 @@ Unacceptable inputs were:
 The following features were built into input validation:
 - Input instructions were clearly given
 - Where an invalid input was made, the instructions were repeated and correct input invited.
-- All input errors were caught using either a while loop or  Try/
+- All input errors were caught using either a while loop or  Try/Except
 - Feedback to the user was polite, usually by repetition of the clear input instructions.
-####Game Flow 
+### Game Flow 
 #### Feedback
 As the program progresses, the user is given appropriate feedback.
 #### Screens
@@ -273,12 +274,17 @@ If the user chooses to display a past game, the data for that game is presented:
 ![game data](/assets/images/game_data.png)
 ### Surface
 [Back to Top](#contents)
-        + Colorama
+
+#### Colorama
+The colorama library enables colour to be appied to text in the terminal.
+https://pypi.org/project/colorama/
+A text prefix was added before the desired colour text and a prefix was added if the same colour was not to be continued.
+At the begining of the run.py file, colorama needed to be initated, and at the end in neded to be deinitiated.
 ## Technologies Used
 [Back to Top](#contents)
 
 ### Language
-The project was written in python version 3
+The project was written in python version 3.8.11
 ### IDE
 The development environment used was GitPod
 ### Virtual Environment
@@ -295,20 +301,24 @@ GitHub was used for external project storage and display
 The following libraries were used:
 #### Slugify
 https://pypi.org/project/python-slugify/
+
 Slugify provided an easy way to convert a long string into a lowercase-and-hyphon string for use as an ID, a worksheet name and possibly a file path name in a form which was compatible with all operating systemns.
 #### gspread
 https://docs.gspread.org/en/latest/
+
 gspread provided interaction with the remote spreadsheet via the Google Sheets API
 ```
 import gspread
 ```
 #### Google Auth
 https://google-auth.readthedocs.io/en/master/
+
 ```
 from google.oauth2.service_account import Credentials
 ```
 #### Colorama
 https://pypi.org/project/colorama/
+
 The colorama library enabled terminal text to be coloured
 ```
 from colorama import init, deinit, Fore
@@ -326,17 +336,18 @@ The following APIs were used:
 [Back to Top](#contents)
 
 The following resources were used:
-+ CI Training Material
++ Code Institute Training Material
 + Walkthroughs
     + CI Love sandwiches
-    + Oscar Neives
-    + Keith Galli
-
+    + Oscar Neives: 'Programming a Connect-4 game on Python'
+		+ https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
+    + Keith Galli: 'How to Program a Connect 4 AI (implementing the minimax algorithm)
+		+ https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6
 + Python Documentation
-    + DataTime
-+ Gspread Documentation
-+ Stack Overflow
-+ Wikapedia
+    + DataTime: https://docs.python.org/3/library/datetime.html
++ Gspread Documentation: https://docs.gspread.org/en/latest/
++ Stack Overflow: https://stackoverflow.com/
++ Wikapedia: https://en.wikipedia.org/wiki/Main_Page
 ## Development
 [Back to Top](#contents)
 
@@ -423,7 +434,7 @@ The procedure for establishing a link to an external file was exactly followed f
     SHEET.worksheet(worksheet_name)
     ```
 ### Full development of Minimum Viable Product
-The Minimum Viable Product as defined in stage one of the development scope above was developed and deployed before progressing to stge two and beyond.
+The Minimum Viable Product as defined in stage one of the development scope above was developed and deployed before progressing to stage two and beyond.
 
 ### Oscar Neives' Work
 Since this is a terminal based project, it was decided to follow the work of Oscar Neives in his article 'Programming a Connect-4 game on Python'
@@ -431,7 +442,7 @@ Since this is a terminal based project, it was decided to follow the work of Osc
 
 Oscar has very concise code for basic game play and his structure was followed closely.
 
-Modifications were made appropriate to this projects scope.
+Modifications were made appropriate to this project's scope.
 
 ### Keith Galli's Work
 Neil Galli has produced a series of youtube walkthroughs for programming connect4.
@@ -440,7 +451,7 @@ https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZ
 
 Whilst the essence, structure and extensive sections of Keith's code are copied directly, there were also significant modifications which needed to be made. The reason for these modifications were:
 - to match the scope of this project
-- In this project, the user interacts with the game via the terminal based, whereas in Keith's game, he uses pygame to draw a connect4 board on the screen
+- In this project, the user interacts with the game via the terminal, whereas in Keith's game, he uses pygame to draw a connect4 board on the screen
 - My project (and Oscar Neives' version) use Stacks for column data and nested lists for board data, whereas Keith uses a Numpy Array for both. Keith uses integers to represent game pieces, and I use strings. The indexing for Numpy Arrays and python nests lists are very different.
 ## Testing
 [Back to Top](#contents)
@@ -455,7 +466,7 @@ Within GipPod, which is a browser based version of the Virtual Studio Code IDE, 
 - advisory 'blue'
 All critical and warning code was corrected.
 ### VSC Debugger
-extensive use of the built in debugger was used to test the more complex aspects of the code. Breakpoints were used to stop the code at particular points so that the values of particular variables could be examined.
+Extensive use of the built in debugger was used to test the more complex aspects of the code. Breakpoints were used to stop the code at particular points so that the values of particular variables could be examined.
 #### Case Example: Checking the code for MiniMax
 At first, it seemed to me that the Terminal Node Case code for the minimax algorithm was wrong.
 ```
@@ -544,9 +555,9 @@ Some others were:
 ## Known Issues
 [Back to Top](#contents)
 
-### There are occasional False +ve for a Computor win (AI plays X)
+### There are occasional false +ve for a Computor win (AI plays X)
 - eg. game ID: 2022-08-13-10-00-52-445210
-### AI win choice not taken when available (AI plays X )
+### AI win choice not always taken when available (AI plays X )
 - eg game ID: 2022-08-13-10-18-15-716327
 ## Deployment
 [Back to Top](#contents)
@@ -556,7 +567,7 @@ Before deployment, the imported libraries were frozen into the requirement.txt f
 ```
 pip3 freeze > requirements.txt
 ```
-This is the contents of  are the project requirements.txt file:
+This is the contents of the project requirements.txt file:
 ```
 cachetools==5.2.0
 colorama==0.4.5
@@ -603,8 +614,14 @@ The project was deployed to the Heroku platform using the following steps:
 Grateful acknowledgment is given to the following
 - Mentor: Martina Terlevic for her amazing guidance and encouragement
 - Code Institute: for training materials, training environment and specific code
-- Oscar Neives: for his article ‘Programming a Connect-4 game on Python’ https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
--  Keith Galli: for his youtube 'How to Program a Connect 4 AI (implementing the minimax algorithm)' https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6
-- Sebastian Lague: for his youtube Algorithms Explained – minimax and alpha-beta pruning https://www.youtube.com/watch?v=l-hh51ncgDI&t=14s
+- Oscar Neives: for his article ‘Programming a Connect-4 game on Python’ 
+https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
+-  Keith Galli: 
+	- for his youtube 'How to Program a Connect 4 AI (implementing the minimax algorithm)' 
+	https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6
+	- for his youtube 'How does a Board Game AI Work? (Connect 4, Othello, Chess, Checkers) - Minimax Algorithm Explained' 
+	https://www.youtube.com/watch?v=y7AKtWGOPAE&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=5
+- Sebastian Lague: for his youtube Algorithms Explained – minimax and alpha-beta pruning 
+https://www.youtube.com/watch?v=l-hh51ncgDI&t=14s
 - Sarah and Emily Rae: for their testing of the game
 
