@@ -47,12 +47,6 @@ The site owner wants to present the Connect4 strategy game, written in python, d
 - Player can choose to go first (X) or second (O)
 - At the end of the game, the player can choose to play again or quit
 - The game is deployed to Heroku for web-based play.
-
-Since this is a terminal based project, it was decided to follow the work of Oscar Neives in his article 'Programming a Connect-4 game on Python'
-- https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
-
-Oscar has very concise code for basic game play and his structure was followed closely.
-
 ### Development Stage 2 : Game data stored in the cloud
 [Back to Top](#contents)
 
@@ -248,28 +242,35 @@ The code to link the project to the external google worksheets was copied from t
 One can review played games by choosing one from the menu before choosing to play a game. See the development section for a proceedure.
 ### Skelteton
 [Back to Top](#contents)
-		+ Input Validation
-			+ Features
-			+ Methods
-				+ Try/Except
-				+ While Loops
-				+ White Space/No input
-			+ Error Feedback
-		+ Game Flow 
-			+ Feedback
-			+ Screens
-				+ Welcome
-				+ Name Input
-				+ Saved Games
-				+ Start Choice
-				+ Screen Alternating
-				+ Game End
-				![win](/assets/images/win.png)
-				+ Again/End
-				+ Screen Shots
-				![saved games](/assets/images/intro.png) 
 
-				![m](/assets/images/game_data.png)
+#### Input Validation
+All player inputs were validated to ensure that only acceptable values were passed inti the program.
+Unacceptable inputs were:
+- White space (the space bar being pressed any number of times, then enter)
+- Enter pressed without any other key preessed
+- Any value other than values in the required values
+##### Features
+The following features were uilt into input validation:
+- Input intructions were clearly given
+- Where an invalid input was made, the instructions were repeated and correct input invited.
+- All input errors were caught using either a while loop or  Try/
+- Feedback to the user was polite, usualy by repetion of the clear input instructions.
+####Game Flow 
+#### Feedback
+As the program progresses, the user is given appropriate feedback.
+#### Screens
+##### Welcome
+The user is greeted and invited to enter their name:
+![intro1](/assets/images/intro1.png)
+##### Saved Games
+The user is invited to review saved games , or continue to play a new game:
+![intro2](/assets/images/intro2.png)
+##### Game Screens
+The game board is dispalyed as the game progresses until the game is over:
+![win](/assets/images/win.png)
+##### Display Game data
+If the user chooses to display a past game, the gata for that game is presented:
+![game data](/assets/images/game_data.png)
 ### Surface
 [Back to Top](#contents)
 		+ Colorama
@@ -315,8 +316,9 @@ One can review played games by choosing one from the menu before choosing to pla
 ## Development
 [Back to Top](#contents)
 
-+ Full dev of MVP
-	+ Walk-throughs and Modification
+### Setting Up Development Environment
+A gitHub repositiory was created using a required Code Institute template. This template created a virtual environment within the GitPod workspace which contained all the necessary requirements for the Milestone 3 project.
+
 ### Proceedure for establishing a link to an external file
 The proceedure for establishing a link to an external file was exactly followed from the Code Institute 'Love Sandwiches' Walkthrough and is as follows:
 - A Google Worksheet was created on my personal Google Drive (personal Google account)
@@ -358,29 +360,134 @@ The proceedure for establishing a link to an external file was exactly followed 
 	- Steps to Enable Google Sheets API
 		- From the hamburger menu, then Library menu, search for Google Sheets API
 		- Select Google Sheets API and click Enable
+	- IDE steps:
+		- Drag the credentials json file to the IDE workshpace
+		- rename this file to creds.json
+		- open creds.json then copy the client email address (without quotes)
+		- In the Google Spredsheet crested for this project, the Share button was clicked
+		- paste the client address, ensure editor is selected, unclick 'notify people', then click 'share'
+		- add 'creds.json' to .gitignore then save, to prevent creds.json being uploaded to GitHub and being publicly available when git pushes are made. 
+		- In gitpod workspace, pin the workspace to stop gitpod closing it after 14 days.
+	- Install required Libraries
+		- Google Auth https://google-auth.readthedocs.io/en/master/
+		- gspreead https://docs.gspread.org/en/latest/
+		- in the terminal:
+		```
+		pip3 install gspread google-auth
+		```
+	- Add the following imports:
+	```
+	import gspread
+	from google.oauth2.service_account import Credentials
+	```
+	- Add the following code ('connect4' is the name of the spreadsheet to connect to)
+	```
+	SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
 
-	+ Requiremnts Freeze
-	+ Link to remote Google Spreadsheet
-	+ Deploy before dev stage 2
-+ Testing
-	+ Incremental Function Testing
-		+ Walkthrough
-		+ Code Adaptatation
-	+ Intelisence VSC Python Linter
-	+ VSC Debugger
-		+ Method
-		+ Breakpoints
-		+ Watch Variable
-		+ Case Examples
-	+ Manual Testing
-		+ Win+check()
-		+ Scoring ()
-		+ AI
-		+ Game Play
-	+ Human Testing
-	+ PEP8
-### Testing
+	CREDS = Credentials.from_service_account_file('creds.json')
+	SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+	GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+	SHEET = GSPREAD_CLIENT.open("connect4")
+	```
+	- The spreadsheet is now connected
+	- Worksheets within the spreadsheet are accessed using:
+	```
+	SHEET.worksheet(worsheet_name)
+	```
+### Full development of Minimum Viable Product
+The Minimum Viable Product as defined in stage one of the development scope above was developed and deployed before progressing to stge two and beyond.
+
+### Oscar Neives' Work
+Since this is a terminal based project, it was decided to follow the work of Oscar Neives in his article 'Programming a Connect-4 game on Python'
+- https://oscarnieves100.medium.com/programming-a-connect-4-game-on-python-f0e787a3a0cf
+
+Oscar has very concise code for basic game play and his structure was followed closely.
+
+Modifications were made appropriate to this projects scope.
+
+### Neil Galli's Work
+Neil Galli has produced a series of yourtube walkthroughs for programming connect4.
+The final one, 'How to Program a Connect 4 AI (implementing the minimax algorithm)' was followed closely.
+https://www.youtube.com/watch?v=MMLtza3CZFM&list=PLFCB5Dp81iNV_inzM-R9AKkZZlePCZdtV&index=6
+
+Whilst the essence, structure and extensive sections of Niel's code are copied directly, there were also significant modifications which needed to be made. The reason for these modifications were:
+- to match the scope of this project
+- In this project, the user interacts with the game via the terminal based, whereas in Keith's gane, he uses pygame to draw a connect4 board on the screen
+- My project (and Oscar Neives' vrsion) use Stacks for column data and nested lists for board data, whereas Keith uses a Nump Array for both. Keith uses integers to represent game pieces, and I use strings. The indexing for Numpy Arrays and python nests lists are very different.
+## Testing
 [Back to Top](#contents)
+
+Testing was done constantly throughout development.
+### Incremental Function Testing
+As each function and logic code was added and adapted, the code was tested to ensure its functionality was as expected.
+### Intelisence GitPod Python Linter
+Within GipPod, which is a browser based version of the Virtual Studio Code IDE, the Intelisence linter showed code anomilies which were either:
+- critical 'red'
+- warning 'orange'
+- advisory 'blue'
+All critical and warning code was corrected.
+### VSC Debugger
+extensive use of the built in debugger was used to test the more complex aspects of the code. Breakpoints were used to stop the code at particular points so that the values of particular variables could be examined.
+#### Case Example: Checking the code for MiniMax
+At first, it seemed to me that the Terminal Node Case code for the minimax algorithm was wrong.
+```
+if depth == 0 or is_terminal:
+        if is_terminal:
+            if win_com:  # Edgecase: Computor wins
+                return (None, 10000000000000000)
+            elif win_ply:  # Edgecase: Player wins
+                return (None, -10000000000000000)
+            else:  # Draw
+                return (None, 0)
+        else:  # depth is zero
+            return (None, score_position(board, computer_xo, computer_xo))
+```
+I needed minimax to pass a value for column to the recieving function computer_move()
+```
+    col = minimax(board, 4, -math.inf, math.inf,
+                  True, computer_xo)[0]
+```
+Initialy I set the depth for minimax to zero and imediately the code rejected the returned value of 'None' to col in coomputor_move(), which needed to use an actual value to write to the column stack.
+So I replaced the value for 'None' with the value generated by the now unsed function pick_best_move()
+```
+# def pick_best_move(board, xo):  # Static Method only
+#     """ Calculate the best column for next move """
+#     valid_locations = get_valid_locations(board)
+#     best_score = -10000
+#     best_col = random.choice(valid_locations)
+#     for col in valid_locations:
+#         row = get_next_open_row(board, col)
+#         temp_board = [x[:] for x in board]
+#         drop_xo(temp_board, row, col, xo)
+#         score = score_position(temp_board, xo)
+#         if score > best_score:
+#             best_score = score
+#             best_col = col
+#     return best_col
+```
+I wondered why minimax was not functioning properly.
+After reflection, I realised that the depth of minimax was never going to be initialised as zero. It was going to be at least 1 and probably 3 or higher.
+I set the depth to 1 and watched the output of minimax (col). It  returned an integer for the chosed column.
+This showed me that the origonal code was correct.
+### Manual Testing
+Example: The Win_check() function was tested as it was built, but debugging required that it was retested later. All except 1 win scenario were commented out and that scenario was recreated during play, to manaually test its functionality. This was repeated for all scenarios, under all circumstance eg player moves first, computer moves first, with some full columns etc.
+### AI Perameters
+These were set abritarily at first, then Keith Galli's prefered perameters were used. Then small adjustments were made.
+### Game Play
+The game play was tested under various scenarios, including forcing the AI to win in various ways
+### Human Testing
+Two other people tested the game play without issue.
+### PEP8
+The code was tested using PEP8 online http://pep8online.com/ and passed without issue.
+![run](/assets/images/pep8run.png)
+![game](/assets/images/pep8game.png)
+![stacks](/assets/images/pep8stack.png)
+![ai](/assets/images/pep8ai.png)
+![utils](/assets/images/pep8utils.png)
 ## Bugs and Fixes
 [Back to Top](#contents)
 	+ inc conidered modification to minimax() thrugh lack of understanding: test to learn
@@ -422,6 +529,7 @@ Minimax: Match maximizing_player with approptiate piece i.e.
 ## Deployment
 [Back to Top](#contents)
 	+ MVP Deployemnt
+	+ Freeze requirements
 	+ Hiroku
 		+ Method
 		+ Auto Update on push

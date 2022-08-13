@@ -1,5 +1,5 @@
 """
-Utilitie functions and program navigation functions
+Utility functions and program navigation functions
 """
 from colorama import Fore
 from game import Game
